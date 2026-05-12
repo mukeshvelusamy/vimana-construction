@@ -8,6 +8,8 @@
 <script type="module" src="./register.js"></script>
 <script type="module" src="./login.js"></script>
 <script type="module" src="./review.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -588,7 +590,7 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
         <li>✓ In-House Specialists Only</li>
       </ul>
     </div>
-    <div class="contact-right">
+    <!-- <div class="contact-right">
       <form onsubmit="submitQuote(event)">
         <div class="cf-group"><label>Full Name</label><input placeholder="John Smith" required></div>
         <div class="cf-row">
@@ -601,7 +603,53 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
       </form>
       <div id="quote-ok" style="display:none;margin-top:12px;background:rgba(201,146,42,.1);border:1px solid var(--gold);color:var(--gold-light);padding:11px;font-size:14px">✓ Thank you! We'll contact you within 24 hours.</div>
     </div>
+  </div> -->
+<div class="contact-right">
+  <div id="quote-ok" data-fs-success style="display:none;margin-top:12px;background:rgba(201,146,42,.1);border:1px solid var(--gold);color:var(--gold-light);padding:11px;font-size:14px">
+    ✓ Thank you! We'll contact you within 24 hours.
   </div>
+
+  <div data-fs-error style="display:none; color: #ff4444; margin-bottom: 10px;"></div>
+
+  <form id="quote-form">
+    <div class="cf-group">
+      <label>Full Name</label>
+      <input name="name" placeholder="John Smith" required data-fs-field>
+    </div>
+    
+    <div class="cf-row">
+      <div class="cf-group">
+        <label>Phone</label>
+        <input name="phone" placeholder="+1 800 000 0000" data-fs-field>
+      </div>
+      <div class="cf-group">
+        <label>Email</label>
+        <input name="email" type="email" placeholder="you@email.com" required data-fs-field>
+      </div>
+    </div>
+
+    <div class="cf-group">
+      <label>Project Type</label>
+      <select name="project_type" data-fs-field>
+        <option>New Build</option>
+        <option>Renovation</option>
+        <option>Commercial</option>
+        <option>Architecture Design</option>
+      </select>
+    </div>
+
+    <div class="cf-group">
+      <label>Project Details</label>
+      <textarea name="message" placeholder="Tell us about your project..." required data-fs-field></textarea>
+    </div>
+
+    <button type="submit" data-fs-submit-btn class="btn-gold" style="width:100%;padding:13px;font-size:14px;text-align:center">
+      Request Free Quote →
+    </button>
+  </form>
+</div>
+
+
 </section>
 
 <!-- FOOTER -->
@@ -796,6 +844,17 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+</script>
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { 
+    formElement: '#quote-form', 
+    formId: 'xeennvge',
+    onSuccess: function() {
+      // Hide the form on success to show only the message
+      document.getElementById('quote-form').style.display = 'none';
+    }
+  });
 </script>
 
 <script>
