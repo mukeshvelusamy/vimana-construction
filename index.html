@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BuildCraft Construction — Excellence Since 1998</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script type="module" src="./register.js"></script>
+<script type="module" src="./login.js"></script>
+<script type="module" src="./review.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#C9922A;--gold-light:#E5B84A;--dark:#0E0E0E;--dark2:#1A1A1A;--dark3:#242424;--light:#F4F0E8;--cream:#FAF7F0;--white:#FFFFFF;--red:#C0392B}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden}
+
+/* TOP BAR */
+#topbar{background:var(--dark);color:#aaa;font-size:13px;padding:8px 0;display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+#topbar a{color:var(--gold);text-decoration:none}
+
+/* NAV */
+nav{background:var(--white);position:sticky;top:0;z-index:900;border-bottom:1px solid #e8e4db;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:70px}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;letter-spacing:.06em;color:var(--dark);cursor:pointer}
+.logo span{color:var(--gold)}
+.nav-links{display:flex;gap:26px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--dark);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent;transition:all .2s;cursor:pointer}
+.nav-links a:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.btn-gold{background:var(--gold);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:10px 22px;border:none;cursor:pointer;transition:background .2s;display:inline-block;text-decoration:none}
+.btn-gold:hover{background:var(--gold-light)}
+.btn-outline-dark{border:1px solid rgba(255,255,255,.35);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;background:none;cursor:pointer;transition:all .2s}
+.btn-outline-dark:hover{border-color:var(--gold);color:var(--gold)}
+.nav-admin-btn{background:none;border:1px solid #ccc;color:#666;font-size:12px;padding:6px 14px;cursor:pointer;margin-left:8px;letter-spacing:.05em;text-transform:uppercase;font-family:'Barlow',sans-serif}
+.nav-admin-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* HERO */
+#hero{position:relative;height:92vh;min-height:600px;overflow:hidden;display:flex;align-items:center}
+.hero-content{position:relative;z-index:2;padding:0 56px;max-width:640px}
+.hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--gold)}
+.hero-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(52px,7vw,96px);font-weight:900;line-height:.93;letter-spacing:.01em;color:var(--white);text-transform:uppercase;margin-bottom:26px}
+.hero-h1 em{font-style:italic;color:var(--gold);font-family:'Playfair Display',serif;font-size:.74em;display:block;font-weight:400;line-height:1.2}
+.hero-sub{color:#ccc;font-size:17px;font-weight:300;line-height:1.65;margin-bottom:38px;max-width:460px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stats{position:absolute;bottom:0;left:0;right:0;background:rgba(10,10,10,.9);display:flex;z-index:2}
+.hero-stat{flex:1;padding:20px;border-right:1px solid rgba(255,255,255,.08);text-align:center}
+.hero-stat:last-child{border-right:none}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--gold);line-height:1}
+.stat-label{font-size:11px;color:#666;letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+
+/* SECTIONS */
+section{padding:88px 48px}
+.sec-eye{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-eye::before{content:'';width:22px;height:1px;background:var(--gold)}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(34px,5vw,56px);font-weight:900;line-height:.95;text-transform:uppercase;letter-spacing:.02em;color:var(--dark);margin-bottom:14px}
+.sec-sub{color:#666;font-size:16px;font-weight:300;line-height:1.7;max-width:520px}
+.sec-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:18px}
+
+/* SERVICES */
+#services{background:var(--dark)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:rgba(255,255,255,.07);margin-top:48px}
+.svc-card{background:var(--dark2);overflow:hidden;transition:background .25s}
+.svc-card:hover{background:var(--dark3)}
+.svc-img{width:100%;height:170px;object-fit:cover;display:block;transition:transform .4s}
+.svc-card:hover .svc-img{transform:scale(1.05)}
+.svc-body{padding:24px 26px 30px}
+.svc-num{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:900;color:rgba(201,146,42,.13);line-height:1;margin-bottom:5px}
+.svc-name{font-family:'Barlow Condensed',sans-serif;font-size:21px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--white);margin-bottom:9px}
+.svc-desc{font-size:14px;color:#666;line-height:1.75}
+
+/* GALLERY */
+#gallery{background:var(--light);padding-bottom:88px}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:230px;gap:7px}
+.gal-item{position:relative;overflow:hidden;cursor:pointer}
+.gal-item:nth-child(1),.gal-item:nth-child(5){grid-column:span 2;grid-row:span 2}
+.gal-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.gal-item:hover img{transform:scale(1.06)}
+.gal-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,transparent 55%);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
+.gal-item:hover .gal-ov{opacity:1}
+.gal-tag{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.gal-cap{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--white);text-transform:uppercase}
+
+/* PROCESS */
+#process{background:var(--dark)}
+.proc-steps{display:flex;gap:0;position:relative;margin-top:48px}
+.proc-steps::before{content:'';position:absolute;top:27px;left:0;right:0;height:1px;background:linear-gradient(to right,var(--gold),rgba(201,146,42,.15));z-index:0}
+.proc-step{flex:1;position:relative;z-index:1}
+.step-c{width:54px;height:54px;border:2px solid var(--gold);background:var(--dark);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.step-n{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold)}
+.step-nm{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:5px}
+.step-d{font-size:13px;color:#555;line-height:1.6;max-width:130px}
+.step-w{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:5px}
+
+/* ABOUT */
+#about{background:var(--white)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-img-wrap{position:relative}
+.about-img-wrap img{width:100%;height:500px;object-fit:cover;display:block}
+.about-badge{position:absolute;bottom:-18px;right:-18px;background:var(--gold);padding:24px 20px;text-align:center}
+.about-badge-num{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--white);line-height:1}
+.about-badge-lbl{font-size:11px;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.about-text p{font-size:15px;color:#555;line-height:1.9;margin-bottom:16px}
+
+/* TEAM */
+#team{background:var(--light)}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:44px}
+.team-card{background:var(--white);overflow:hidden}
+.team-card img{width:100%;height:260px;object-fit:cover;display:block;transition:transform .4s}
+.team-card:hover img{transform:scale(1.04)}
+.team-info{padding:16px 18px}
+.team-name{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;text-transform:uppercase;color:var(--dark);margin-bottom:2px}
+.team-role{font-size:12px;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+
+/* ── REVIEW SLIDER ── */
+#reviews{background:var(--dark);overflow:hidden}
+#reviews .sec-title{color:var(--white)}
+.slider-wrap{position:relative;margin-top:44px}
+.slider-track-outer{overflow:hidden}
+.slider-track{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform}
+/* REVIEW CARDS */
+.review-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);padding:28px;position:relative;flex:0 0 calc(33.333% - 14px);margin-right:20px;min-width:0}
+.review-card::before{content:'"';font-family:'Playfair Display',serif;font-size:100px;color:rgba(201,146,42,.09);position:absolute;top:-6px;left:16px;line-height:1}
+.rv-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-bottom:12px}
+.rv-text{font-size:14px;color:#ccc;line-height:1.78;font-style:italic;margin-bottom:20px;position:relative;z-index:1}
+.rv-author{display:flex;align-items:center;gap:12px;border-top:1px solid rgba(255,255,255,.06);padding-top:14px}
+.rv-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;color:var(--white)}
+.rv-avatar img{width:100%;height:100%;object-fit:cover}
+.rv-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.05em}
+.rv-role{font-size:12px;color:#444}
+/* BLOG CARDS (slider) */
+.blog-card{background:var(--white);border:1px solid #e8e4db;overflow:hidden;flex:0 0 calc(25% - 15px);margin-right:20px;min-width:0;transition:transform .2s,box-shadow .2s;cursor:pointer}
+.blog-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.1)}
+.blog-thumb{height:190px;overflow:hidden;position:relative}
+.blog-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.blog-card:hover .blog-thumb img{transform:scale(1.05)}
+.blog-body{padding:22px}
+.blog-meta{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.blog-cat{background:var(--gold);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px}
+.blog-date{font-size:11px;color:#bbb}
+.blog-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:var(--dark);margin-bottom:8px;line-height:1.15}
+.blog-excerpt{font-size:13px;color:#666;line-height:1.7}
+.blog-read{display:inline-block;margin-top:12px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold)}
+/* SLIDER ARROWS */
+.slider-arrows{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:24px}
+.sl-arrow{width:44px;height:44px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--white);font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;line-height:1}
+.sl-arrow:hover{border-color:var(--gold);color:var(--gold)}
+.sl-arrow.dark{border-color:#ddd;color:var(--dark)}
+.sl-arrow.dark:hover{border-color:var(--gold);color:var(--gold)}
+.sl-dots{display:flex;gap:6px;align-items:center;margin-right:auto}
+.sl-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .2s}
+.sl-dot.active{background:var(--gold);width:20px;border-radius:3px}
+.sl-dot.dark{background:rgba(0,0,0,.15)}
+.sl-dot.dark.active{background:var(--gold)}
+
+/* BLOG PAGE OVERLAY */
+#blog-page{display:none;position:fixed;inset:0;background:var(--cream);z-index:800;overflow-y:auto}
+#blog-page.open{display:block}
+.bp-header{background:var(--dark);padding:20px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.bp-header h2{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--white);letter-spacing:.06em}
+.bp-close{background:none;border:none;color:#aaa;font-size:28px;cursor:pointer;line-height:1}
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;padding:40px 48px}
+
+/* CONTACT */
+#contact{padding:0}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr}
+.contact-left{padding:72px 48px;background:var(--gold)}
+.contact-left h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(30px,4vw,50px);font-weight:900;text-transform:uppercase;color:var(--white);line-height:1;margin-bottom:12px}
+.contact-left p{color:rgba(255,255,255,.82);font-size:15px;margin-bottom:22px;line-height:1.7}
+.contact-perks{list-style:none;display:flex;flex-direction:column;gap:9px}
+.contact-perks li{color:rgba(255,255,255,.9);font-size:14px;display:flex;align-items:center;gap:9px}
+.contact-right{padding:56px 48px;background:var(--dark2)}
+.cf-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.cf-group label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555}
+.cf-group input,.cf-group textarea,.cf-group select{background:#111;border:1px solid #222;color:var(--white);padding:11px 13px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;width:100%;transition:border-color .2s}
+.cf-group input:focus,.cf-group textarea:focus{border-color:var(--gold)}
+.cf-group textarea{min-height:100px;resize:vertical}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* FOOTER */
+footer{background:var(--dark);color:#444;padding:56px 48px 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px}
+.footer-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--white);display:inline-block;margin-bottom:12px;cursor:pointer}
+.footer-logo span{color:var(--gold)}
+.footer-desc{font-size:13px;line-height:1.8;color:#2a2a2a;max-width:260px}
+.footer-hdg{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:13px;color:#2a2a2a;text-decoration:none;transition:color .2s;cursor:pointer}
+.footer-links a:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#222;flex-wrap:wrap;gap:8px}
+
+/* LIGHTBOX (gallery) */
+#lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:2000;flex-direction:column;align-items:center;justify-content:center}
+#lightbox.open{display:flex}
+#lb-close{position:fixed;top:16px;right:24px;background:none;border:none;color:white;font-size:42px;cursor:pointer;z-index:2001;line-height:1}
+#lb-img{max-width:88vw;max-height:78vh;object-fit:contain;display:block}
+#lb-cap{color:#ccc;font-size:14px;margin-top:14px;text-align:center}
+#lb-tag{color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-top:3px;text-align:center}
+
+/* BLOG POST MODAL */
+#blog-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:1000;align-items:flex-start;justify-content:center;overflow-y:auto;padding:36px 16px}
+#blog-modal.open{display:flex}
+.bm-inner{background:var(--white);max-width:800px;width:100%;margin:auto}
+.bm-hero{width:100%;height:300px;object-fit:cover;display:block}
+.bm-body{padding:36px 40px}
+.bm-cat{display:inline-block;background:var(--gold);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 11px;margin-bottom:12px}
+.bm-title{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;text-transform:uppercase;letter-spacing:.02em;color:var(--dark);line-height:1.04;margin-bottom:8px}
+.bm-meta{font-size:13px;color:#aaa;margin-bottom:24px}
+.bm-text p{font-size:15px;color:#444;line-height:1.9;margin-bottom:16px}
+/* Blog image gallery inside post */
+.bm-img-gallery{margin:24px 0;position:relative}
+.bm-img-slider{display:flex;overflow:hidden;position:relative}
+.bm-img-slide{flex:0 0 100%;transition:transform .38s ease;position:relative}
+.bm-img-slide img{width:100%;height:340px;object-fit:cover;display:block;cursor:zoom-in}
+.bm-img-slide .img-expand{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.55);border:none;color:white;width:34px;height:34px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.bm-img-nav{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.bm-img-counter{font-size:13px;color:#aaa;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.06em}
+.bm-img-thumbs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.bm-img-thumb{width:60px;height:44px;object-fit:cover;cursor:pointer;opacity:.55;transition:opacity .2s;border:2px solid transparent;flex-shrink:0}
+.bm-img-thumb.active{opacity:1;border-color:var(--gold)}
+.bm-close-btn{display:block;margin:0 40px 36px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:12px;text-align:center;cursor:pointer;background:none;width:calc(100% - 80px)}
+.bm-close-btn:hover{background:var(--gold);color:white}
+
+/* LOGIN */
+#login-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:990;align-items:center;justify-content:center}
+#login-screen.open{display:flex}
+.login-box{background:var(--dark2);border-top:4px solid var(--gold);padding:44px;width:370px;max-width:94vw}
+.login-box h2{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:5px;letter-spacing:.05em}
+.login-box p{font-size:13px;color:#444;margin-bottom:26px}
+.login-box input{width:100%;background:#111;border:1px solid #1e1e1e;color:var(--white);padding:12px 14px;font-family:'Barlow',sans-serif;font-size:14px;margin-bottom:12px;outline:none;transition:border-color .2s;display:block}
+.login-box input:focus{border-color:var(--gold)}
+.login-btn-main{width:100%;background:var(--gold);border:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.1em;text-transform:uppercase;padding:13px;cursor:pointer;transition:background .2s;margin-bottom:11px;display:block}
+.login-btn-main:hover{background:var(--gold-light)}
+.login-cancel{background:none;border:none;color:#333;font-size:13px;cursor:pointer;width:100%;text-align:center;font-family:'Barlow',sans-serif}
+.login-cancel:hover{color:#666}
+.login-err{color:#e74c3c;font-size:13px;margin-bottom:12px;display:none;background:rgba(231,76,60,.08);padding:8px 12px;border-left:3px solid #e74c3c}
+.login-lock{color:#e5b84a;font-size:13px;margin-bottom:12px;display:none;background:rgba(229,184,74,.08);padding:8px 12px;border-left:3px solid #e5b84a}
+
+/* ACTION CHOOSER */
+#action-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:990;align-items:center;justify-content:center}
+#action-screen.open{display:flex}
+.action-box{background:var(--dark2);border-top:4px solid var(--gold);padding:38px;width:540px;max-width:95vw}
+.action-box h2{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px;letter-spacing:.05em}
+.action-box p{font-size:13px;color:#444;margin-bottom:26px}
+.action-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.action-card{background:#0d0d0d;border:1px solid #1a1a1a;padding:24px 12px;text-align:center;cursor:pointer;transition:all .2s;border-bottom:3px solid transparent}
+.action-card:hover{border-bottom-color:var(--gold);background:#141414}
+.ac-icon{font-size:34px;margin-bottom:10px;display:block}
+.ac-label{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--white);margin-bottom:4px}
+.ac-desc{font-size:12px;color:#3a3a3a;line-height:1.5}
+.action-close-btn{background:none;border:none;color:#333;font-size:13px;cursor:pointer;width:100%;text-align:center;font-family:'Barlow',sans-serif}
+.action-close-btn:hover{color:#666}
+
+/* ADMIN PANEL */
+#admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:991;align-items:center;justify-content:center}
+#admin-overlay.open{display:flex}
+#admin-panel{background:var(--white);width:min(880px,96vw);max-height:92vh;overflow-y:auto;border-top:4px solid var(--gold)}
+.adm-head{background:var(--dark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.adm-head h2{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:var(--white);letter-spacing:.08em;text-transform:uppercase}
+.adm-head-r{display:flex;align-items:center;gap:9px}
+.adm-back{background:none;border:1px solid #2a2a2a;color:#888;font-size:12px;padding:5px 13px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.adm-back:hover{border-color:var(--gold);color:var(--gold)}
+.adm-x{background:none;border:none;color:#888;font-size:26px;cursor:pointer;line-height:1}
+.adm-body{padding:28px}
+.af-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.af-group label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555}
+.af-group input,.af-group textarea,.af-group select{border:1px solid #e0e0e0;padding:10px 13px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s;width:100%;background:var(--white)}
+.af-group input:focus,.af-group textarea:focus{border-color:var(--gold)}
+.af-group textarea{min-height:90px;resize:vertical}
+.af-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.a-submit{background:var(--gold);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;padding:12px 28px;border:none;cursor:pointer;transition:background .2s}
+.a-submit:hover{background:var(--gold-light)}
+.a-stitle{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;text-transform:uppercase;margin-bottom:5px;color:var(--dark)}
+.a-ssub{font-size:13px;color:#999;margin-bottom:20px;line-height:1.6}
+.a-ok{background:#f0faf0;border:1px solid #c0e8c0;color:#2a7a2a;padding:9px 13px;font-size:13px;margin-bottom:14px;display:none}
+.a-list{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.a-item{border:1px solid #eeeeee;padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:#fafaf8}
+.a-item-t{font-weight:600;font-size:13px;color:var(--dark);margin-bottom:2px}
+.a-item-s{font-size:12px;color:#bbb}
+.btn-del{background:#fee;border:1px solid #fcc;color:var(--red);font-size:11px;padding:4px 10px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0}
+.star-sel{display:flex;gap:4px}
+.star-sel span{font-size:26px;cursor:pointer;color:#e0e0e0;transition:color .1s;line-height:1;user-select:none}
+.star-sel span.on{color:var(--gold)}
+.adm-divider{border:none;border-top:1px solid #eeeeee;margin:24px 0}
+.list-hd{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;text-transform:uppercase;margin-bottom:9px;color:var(--dark)}
+/* img uploader */
+.img-drop-zone{border:2px dashed #e0e0e0;padding:20px;text-align:center;cursor:pointer;background:#fafaf8;transition:border-color .2s;margin-bottom:9px}
+.img-drop-zone:hover{border-color:var(--gold)}
+.img-drop-zone .idz-icon{font-size:26px;margin-bottom:5px}
+.img-drop-zone .idz-txt{font-size:12px;color:#aaa}
+.img-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:7px;margin-top:7px}
+.img-prev-wrap{position:relative;height:68px;overflow:hidden;border:2px solid #eee}
+.img-prev-wrap img{width:100%;height:100%;object-fit:cover}
+.img-prev-badge{position:absolute;top:2px;left:2px;font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 5px;text-transform:uppercase;background:rgba(0,0,0,.6);color:white}
+.img-prev-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.55);border:none;color:white;width:18px;height:18px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;line-height:1}
+.img-prev-wrap.is-cover{border-color:var(--gold)}
+
+@media(max-width:900px){
+  nav{padding:0 14px}.nav-links{display:none}
+  section{padding:52px 18px}
+  .hero-content{padding:0 18px}
+  .hero-stats{position:relative;flex-wrap:wrap}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .proc-steps{flex-direction:column;gap:22px}.proc-steps::before{display:none}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:170px}
+  .gal-item:nth-child(1),.gal-item:nth-child(5){grid-column:span 1;grid-row:span 1}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .action-cards{grid-template-columns:1fr}
+  .af-row,.cf-row{grid-template-columns:1fr}
+  .review-card{flex:0 0 calc(90% - 14px)}
+  .blog-card{flex:0 0 calc(85% - 14px)}
+  .bp-grid{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <span>📍 123 Industrial Blvd, Suite 400, Chicago, IL</span>
+  <span>📞 <a href="tel:+18001234567">+1 (800) 123-4567</a></span>
+  <span>✉ <a href="mailto:hello@buildcraft.com">hello@buildcraft.com</a></span>
+</div>
+
+<nav>
+  <span class="logo" onclick="goTo('hero')">BUILD<span>CRAFT</span></span>
+  <ul class="nav-links">
+    <li><a onclick="goTo('hero')">Home</a></li>
+    <li><a onclick="goTo('services')">Services</a></li>
+    <li><a onclick="goTo('gallery')">Projects</a></li>
+    <li><a onclick="goTo('about')">About</a></li>
+    <li><a onclick="goTo('reviews')">Reviews</a></li>
+    <li><a onclick="goTo('blog')">Blog</a></li>
+    <li><a onclick="goTo('contact')">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:6px">
+    <button class="btn-gold" style="font-size:13px;padding:9px 20px" onclick="goTo('contact')">Get a Quote</button>
+    <button class="nav-admin-btn" onclick="openLogin()">⚙ Owner Login</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" style="padding:0">
+  <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80" alt="Construction" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+  <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(14,14,14,.97) 36%,rgba(14,14,14,.55) 64%,rgba(14,14,14,.2) 100%)"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Excellence Since 1998</div>
+    <h1 class="hero-h1">Built to<br><em>Last a Lifetime.</em>Stand Apart.</h1>
+    <p class="hero-sub">From foundation to finish — precision-built structures that define skylines and stand the test of time. Zero surprises. Every milestone met.</p>
+    <div class="hero-btns">
+      <button class="btn-gold" style="padding:14px 34px;font-size:14px" onclick="goTo('gallery')">View Our Work</button>
+      <button class="btn-outline-dark" onclick="goTo('process')">How We Build</button>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="stat-num">450+</div><div class="stat-label">Projects Completed</div></div>
+    <div class="hero-stat"><div class="stat-num">26</div><div class="stat-label">Years Experience</div></div>
+    <div class="hero-stat"><div class="stat-num">99%</div><div class="stat-label">On-Time Delivery</div></div>
+    <div class="hero-stat"><div class="stat-num">88%</div><div class="stat-label">Repeat Clients</div></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="sec-hdr">
+    <div><div class="sec-eye">What We Do</div><h2 class="sec-title" style="color:var(--white)">Mastery at<br>Every Scale</h2></div>
+    <p class="sec-sub" style="color:#666">Comprehensive construction services delivered by in-house specialists — never outsourced.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card"><img class="svc-img" src="https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=600&q=80" alt="New Builds"><div class="svc-body"><div class="svc-num">01</div><div class="svc-name">New Builds</div><div class="svc-desc">Turnkey construction for luxury residences and commercial properties. We handle everything from groundwork to final handover with obsessive precision.</div></div></div>
+    <div class="svc-card"><img class="svc-img" src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&q=80" alt="Renovations"><div class="svc-body"><div class="svc-num">02</div><div class="svc-name">Renovations</div><div class="svc-desc">Breathing new life into existing structures with modern upgrades and superior finishing while preserving architectural integrity throughout.</div></div></div>
+    <div class="svc-card"><img class="svc-img" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" alt="Commercial"><div class="svc-body"><div class="svc-num">03</div><div class="svc-name">Commercial</div><div class="svc-desc">Retail, office, and hospitality spaces built to amplify your brand and optimise operational flow — on schedule and within budget, every time.</div></div></div>
+    <div class="svc-card"><img class="svc-img" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80" alt="Architecture"><div class="svc-body"><div class="svc-num">04</div><div class="svc-name">Architecture</div><div class="svc-desc">Integrated design-build approach ensuring your vision translates with precision from blueprint to reality, by certified in-house architects.</div></div></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="sec-hdr">
+    <div><div class="sec-eye" style="color:var(--gold)">Portfolio</div><h2 class="sec-title">Signature<br>Projects</h2></div>
+    <button class="btn-gold" onclick="goTo('contact')">Start Your Project</button>
+  </div>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="sec-hdr">
+    <div><div class="sec-eye">Our Method</div><h2 class="sec-title" style="color:var(--white)">The BuildCraft<br>Process</h2></div>
+    <p class="sec-sub" style="color:#555">A transparent, stage-gated workflow engineered for efficiency and zero surprises at every step.</p>
+  </div>
+  <div class="proc-steps">
+    <div class="proc-step"><div class="step-c"><div class="step-n">01</div></div><div class="step-nm">Discovery</div><div class="step-d">Consultation and site feasibility.</div><div class="step-w">Week 1</div></div>
+    <div class="proc-step"><div class="step-c"><div class="step-n">02</div></div><div class="step-nm">Design</div><div class="step-d">Architectural drawings and materials.</div><div class="step-w">Week 2–4</div></div>
+    <div class="proc-step"><div class="step-c"><div class="step-n">03</div></div><div class="step-nm">Planning</div><div class="step-d">Permits, scheduling, procurement.</div><div class="step-w">Week 5–6</div></div>
+    <div class="proc-step"><div class="step-c"><div class="step-n">04</div></div><div class="step-nm">Build</div><div class="step-d">Construction with weekly updates.</div><div class="step-w">Varies</div></div>
+    <div class="proc-step"><div class="step-c"><div class="step-n">05</div></div><div class="step-nm">Handover</div><div class="step-d">Final inspection and key delivery.</div><div class="step-w">Final Week</div></div>
+    <div class="proc-step"><div class="step-c"><div class="step-n">06</div></div><div class="step-nm">Aftercare</div><div class="step-d">12-month warranty and support.</div><div class="step-w">Ongoing</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <img src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=800&q=80" alt="BuildCraft team">
+      <div class="about-badge"><div class="about-badge-num">26</div><div class="about-badge-lbl">Years of Excellence</div></div>
+    </div>
+    <div class="about-text">
+      <div class="sec-eye">About BuildCraft</div>
+      <h2 class="sec-title">We Build More<br>Than Structures</h2>
+      <p>Founded in 1998 by master builder Robert Stone, BuildCraft has grown from a two-man residential crew into one of Chicago's most trusted full-service construction firms. Over 26 years and 450+ projects — from intimate luxury renovations to landmark commercial developments.</p>
+      <p>Our philosophy: every project deserves obsessive attention to detail, transparent communication, and a relentless commitment to quality. We don't outsource critical work. Our in-house team of certified structural engineers, architects, and project managers ensures every build is delivered on time, on budget, and beyond expectation.</p>
+      <p>Every new build comes with a <strong>10-year structural warranty</strong> — because we stand behind every nail, beam, and finish we produce.</p>
+      <button class="btn-gold" style="margin-top:10px;padding:14px 32px" onclick="goTo('contact')">Work With Us</button>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="sec-hdr"><div><div class="sec-eye">Our People</div><h2 class="sec-title">Meet the Team</h2></div></div>
+  <div class="team-grid">
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="Robert Stone"><div class="team-info"><div class="team-name">Robert Stone</div><div class="team-role">Founder & CEO</div></div></div>
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Elena Rostova"><div class="team-info"><div class="team-name">Elena Rostova</div><div class="team-role">Design Director</div></div></div>
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Marcus Well"><div class="team-info"><div class="team-name">Marcus Well</div><div class="team-role">Lead Architect</div></div></div>
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Priya Nair"><div class="team-info"><div class="team-name">Priya Nair</div><div class="team-role">Project Manager</div></div></div>
+  </div>
+</section>
+
+<!-- REVIEWS SLIDER -->
+<section id="reviews">
+  <div class="sec-hdr">
+    <div><div class="sec-eye">Client Stories</div><h2 class="sec-title" style="color:var(--white)">What Our<br>Clients Say</h2></div>
+  </div>
+  <div class="slider-wrap">
+    <div class="slider-track-outer"><div class="slider-track" id="rv-track"></div></div>
+    <div class="slider-arrows">
+      <div class="sl-dots" id="rv-dots"></div>
+      <button class="sl-arrow" onclick="slidePrev('rv')">&#8592;</button>
+      <button class="sl-arrow" onclick="slideNext('rv')">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG SLIDER -->
+<section id="blog" style="background:var(--cream)">
+  <div class="sec-hdr">
+    <div><div class="sec-eye" style="color:var(--gold)">News & Stories</div><h2 class="sec-title">Latest from<br>BuildCraft</h2></div>
+    <button class="btn-gold" onclick="openBlogPage()">See All Blogs →</button>
+  </div>
+  <div class="slider-wrap">
+    <div class="slider-track-outer"><div class="slider-track" id="bl-track"></div></div>
+    <div class="slider-arrows">
+      <div class="sl-dots" id="bl-dots"></div>
+      <button class="sl-arrow dark" onclick="slidePrev('bl')">&#8592;</button>
+      <button class="sl-arrow dark" onclick="slideNext('bl')">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="padding:0">
+  <div class="contact-grid">
+    <div class="contact-left">
+      <h2>Ready to Build<br>Your Vision?</h2>
+      <p>Free on-site consultation. Detailed cost breakdown within 48 hours. No obligations — just complete clarity.</p>
+      <ul class="contact-perks">
+        <li>✓ Free On-Site Consultation</li><li>✓ Detailed Cost Breakdown</li>
+        <li>✓ 3D Concept Sketch Included</li><li>✓ 10-Year Structural Warranty</li>
+        <li>✓ In-House Specialists Only</li>
+      </ul>
+    </div>
+    <div class="contact-right">
+      <form onsubmit="submitQuote(event)">
+        <div class="cf-group"><label>Full Name</label><input placeholder="John Smith" required></div>
+        <div class="cf-row">
+          <div class="cf-group"><label>Phone</label><input placeholder="+1 800 000 0000"></div>
+          <div class="cf-group"><label>Email</label><input type="email" placeholder="you@email.com"></div>
+        </div>
+        <div class="cf-group"><label>Project Type</label><select><option>New Build</option><option>Renovation</option><option>Commercial</option><option>Architecture Design</option></select></div>
+        <div class="cf-group"><label>Project Details</label><textarea placeholder="Tell us about your project — size, timeline, budget..."></textarea></div>
+        <button type="submit" class="btn-gold" style="width:100%;padding:13px;font-size:14px;text-align:center">Request Free Quote →</button>
+      </form>
+      <div id="quote-ok" style="display:none;margin-top:12px;background:rgba(201,146,42,.1);border:1px solid var(--gold);color:var(--gold-light);padding:11px;font-size:14px">✓ Thank you! We'll contact you within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <span class="footer-logo" onclick="goTo('hero')">BUILD<span>CRAFT</span></span>
+      <p class="footer-desc">Elevating construction standards since 1998. We build spaces that inspire, endure, and perform — on time, on budget, every time.</p>
+    </div>
+    <div>
+      <div class="footer-hdg">Services</div>
+      <ul class="footer-links"><li><a onclick="goTo('services')">Residential Construction</a></li><li><a onclick="goTo('services')">Commercial Builds</a></li><li><a onclick="goTo('services')">Project Management</a></li><li><a onclick="goTo('services')">Interior Renovation</a></li><li><a onclick="goTo('services')">Architectural Design</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-hdg">Company</div>
+      <ul class="footer-links"><li><a onclick="goTo('about')">About Us</a></li><li><a onclick="goTo('team')">Our Team</a></li><li><a onclick="goTo('reviews')">Client Reviews</a></li><li><a onclick="openBlogPage()">News & Blog</a></li><li><a onclick="goTo('contact')">Contact Us</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-hdg">Contact</div>
+      <ul class="footer-links"><li><a>123 Industrial Blvd, Chicago, IL</a></li><li><a href="tel:+18001234567">+1 (800) 123-4567</a></li><li><a href="mailto:hello@buildcraft.com">hello@buildcraft.com</a></li><li><a onclick="goTo('contact')">Get a Free Quote</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 BuildCraft Inc. All rights reserved.</span>
+    <button class="nav-admin-btn" onclick="openLogin()">⚙ Owner Login</button>
+  </div>
+</footer>
+
+<!-- GALLERY LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close" onclick="closeLightbox()">×</button>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-cap"></div><div id="lb-tag"></div>
+</div>
+
+<!-- BLOG POST MODAL -->
+<div id="blog-modal">
+  <div class="bm-inner" id="bm-inner">
+    <img id="bm-hero" class="bm-hero" src="" alt="">
+    <div class="bm-body">
+      <span id="bm-cat" class="bm-cat"></span>
+      <h2 id="bm-title" class="bm-title"></h2>
+      <p id="bm-meta" class="bm-meta"></p>
+      <div id="bm-content"></div>
+    </div>
+    <button class="bm-close-btn" onclick="closeBlogModal()">← Back to Blog</button>
+  </div>
+</div>
+
+<!-- ALL BLOGS PAGE -->
+<div id="blog-page">
+  <div class="bp-header">
+    <h2>All Blog Posts</h2>
+    <button class="bp-close" onclick="closeBlogPage()">×</button>
+  </div>
+  <div class="bp-grid" id="bp-grid"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <!-- signup -->
+  <!-- <div class="login-box">
+    <h2>signup Owner Login</h2>
+    <p>Sign in to manage your website content.</p>
+    <div id="login-err" class="login-err">Incorrect credentials. <span id="attempts-left"></span></div>
+    <div id="login-lock" class="login-lock">Too many attempts. Locked for <span id="lock-timer">60</span>s.</div>
+     <input type="text" id="login-user" placeholder="Username" autocomplete="off"> 
+     <input type="email" id="login-user" placeholder="Email">
+    <input type="password" id="login-pass" placeholder="Password">
+    <button class="login-btn-main" id="login-btn" onclick="doSignup()">Sign In →</button>
+    <button class="login-cancel" onclick="closeLogin()">Cancel</button>
+  </div> -->
+  <!-- signin  -->
+   <div class="login-box">
+    <h2>signin Owner Login</h2>
+    <p>Sign in to manage your website content.</p>
+    <div id="login-err" class="login-err">Incorrect credentials. <span id="attempts-left"></span></div>
+    <div id="login-lock" class="login-lock">Too many attempts. Locked for <span id="lock-timer">60</span>s.</div>
+    <!-- <input type="text" id="login-user" placeholder="Username" autocomplete="off"> -->
+     <input type="email" id="login-user" placeholder="Email">
+    <input type="password" id="login-pass" placeholder="Password">
+     <button class="login-btn-main" id="login-btn" onclick="doLogin()">Sign In →</button>
+    <button class="login-cancel" onclick="closeLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- ACTION CHOOSER -->
+<div id="action-screen">
+  <div class="action-box">
+    <h2>Welcome, Owner</h2>
+    <p>What would you like to update on the site today?</p>
+    <div class="action-cards">
+      <div class="action-card" onclick="openAdmin('reviews')"><span class="ac-icon">⭐</span><div class="ac-label">Add Review</div><div class="ac-desc">Publish a new client testimonial</div></div>
+      <div class="action-card" onclick="openAdmin('gallery')"><span class="ac-icon">🖼️</span><div class="ac-label">Add Photo</div><div class="ac-desc">Upload a project photo to gallery</div></div>
+      <div class="action-card" onclick="openAdmin('blog')"><span class="ac-icon">📝</span><div class="ac-label">Add Blog Post</div><div class="ac-desc">Write and publish a new article</div></div>
+    </div>
+    <button class="action-close-btn" onclick="closeActionScreen()">Close</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-overlay">
+  <div id="admin-panel">
+    <div class="adm-head">
+      <h2 id="adm-title">Site Manager</h2>
+      <div class="adm-head-r"><button class="adm-back" onclick="backToActions()">← Back</button><button class="adm-x" onclick="closeAdmin()">×</button></div>
+    </div>
+    <div class="adm-body">
+
+      <!-- REVIEWS FORM -->
+      <div id="form-reviews" style="display:none">
+        <div class="a-stitle">Add New Client Review</div>
+        <div class="a-ssub">Reviews are shown latest-first in the homepage slider.</div>
+        <div id="rv-ok" class="a-ok">✓ Review added and live!</div>
+        <div class="af-row">
+          <div class="af-group"><label>Client Name</label><input id="r-name" placeholder="e.g. Jane Smith"></div>
+          <div class="af-group"><label>Role / Title</label><input id="r-role" placeholder="e.g. Homeowner"></div>
+        </div>
+        <div class="af-group"><label>Star Rating</label><div class="star-sel" id="star-sel"><span onclick="setStars(1)">★</span><span onclick="setStars(2)">★</span><span onclick="setStars(3)">★</span><span onclick="setStars(4)">★</span><span onclick="setStars(5)">★</span></div></div>
+        <div class="af-group"><label>Review Text</label><textarea id="r-text" placeholder="Write the client's testimonial..."></textarea></div>
+          <button class="a-submit" onclick="addReview()">Add Review →</button>
+        <hr class="adm-divider"><div class="list-hd">Existing Reviews</div>
+        <div class="a-list" id="adm-rv-list"></div>
+      </div>
+
+      <!-- GALLERY FORM -->
+      <div id="form-gallery" style="display:none">
+        <div class="a-stitle">Add Gallery Photo</div>
+        <div class="a-ssub">Upload a photo from your device and fill in the project details.</div>
+        <div id="gal-ok" class="a-ok">✓ Photo added to gallery!</div>
+        <div class="af-row">
+          <div class="af-group"><label>Project Name</label><input id="g-name" placeholder="e.g. Lakeview Residence"></div>
+          <div class="af-group"><label>Category</label><select id="g-tag"><option>Luxury Residential</option><option>New Build</option><option>Renovation</option><option>Commercial</option><option>Multi-Unit</option><option>Hospitality</option><option>Architecture</option></select></div>
+        </div>
+        <div class="af-group"><label>Upload Photo</label>
+          <div class="img-drop-zone" onclick="document.getElementById('g-file').click()"><div class="idz-icon">📷</div><div class="idz-txt">Click to select a photo</div></div>
+          <input type="file" id="g-file" accept="image/*" style="display:none" onchange="prevGalImg(this)">
+          <div id="g-prev" style="margin-top:6px"></div>
+        </div>
+        <div class="af-group"><label>Caption / Location</label><input id="g-caption" placeholder="e.g. Evanston, IL · Completed 2024"></div>
+        <button class="a-submit" onclick="addGallery()">Add to Gallery →</button>
+        <hr class="adm-divider"><div class="list-hd">Gallery Items</div>
+        <div class="a-list" id="adm-gal-list"></div>
+      </div>
+
+      <!-- BLOG FORM -->
+      <div id="form-blog" style="display:none">
+        <div class="a-stitle">Publish New Blog Post</div>
+        <div class="a-ssub">Upload multiple images — first is the cover, the rest appear in a gallery slider inside the article.</div>
+        <div id="bl-ok" class="a-ok">✓ Blog post published and live!</div>
+        <div class="af-group"><label>Post Title</label><input id="b-title" placeholder="e.g. How We Approach Luxury Renovations"></div>
+        <div class="af-row">
+          <div class="af-group"><label>Category</label><select id="b-cat"><option>Industry News</option><option>Project Stories</option><option>Tips &amp; Guides</option><option>Company Updates</option><option>Design Trends</option></select></div>
+          <div class="af-group"><label>Author Name</label><input id="b-author" placeholder="e.g. Robert Stone"></div>
+        </div>
+        <!-- MULTI IMAGE UPLOADER -->
+        <div class="af-group">
+          <label>Images <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#aaa;font-size:11px">(first = cover · drag to reorder · click × to remove)</span></label>
+          <div class="img-drop-zone" id="b-drop" onclick="document.getElementById('b-imgs').click()">
+            <div class="idz-icon">🖼️</div>
+            <div class="idz-txt">Click to upload one or more images</div>
+          </div>
+          <input type="file" id="b-imgs" accept="image/*" multiple style="display:none" onchange="handleBlogImgs(this)">
+          <div class="img-preview-grid" id="b-img-previews"></div>
+        </div>
+        <div class="af-group"><label>Short Excerpt</label><textarea id="b-excerpt" style="min-height:70px" placeholder="1–2 sentence summary shown on the blog listing..."></textarea></div>
+        <div class="af-group"><label>Full Article Body</label><textarea id="b-body" style="min-height:180px" placeholder="Write the full article. Separate paragraphs with a blank line."></textarea></div>
+        <button class="a-submit" onclick="addPost()">Publish Post →</button>
+        <hr class="adm-divider"><div class="list-hd">Published Posts</div>
+        <div class="a-list" id="adm-bl-list"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBLK2UbEdzPa7rpiGf6A0AJO6S7jvUqDxk",
+    authDomain: "vimana-construction-e6a4a.firebaseapp.com",
+    projectId: "vimana-construction-e6a4a",
+    storageBucket: "vimana-construction-e6a4a.firebasestorage.app",
+    messagingSenderId: "1058890052113",
+    appId: "1:1058890052113:web:8e02824eee430b52d2f7b0"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  SECURITY — Only SHA-256 hashes live in this file.
+//  Plain-text credentials are NEVER stored here.
+//  Hashes were generated offline:
+//    sha256('raswanthbalu') = d63e9b023ff69c351e33a22a5ddd473dd071a89f8b71162581555205aeef4854
+//    sha256('ulabraswanth') = f996dbabdac5b948927b501c4b77c5a637b74d565bdb446d98cd57fad49703b9
+//  Even with full source-code access, these hashes cannot be
+//  reversed to recover the original credentials.
+// ══════════════════════════════════════════════════════════════
+const AUTH = Object.freeze({
+  u: 'd63e9b023ff69c351e33a22a5ddd473dd071a89f8b71162581555205aeef4854',
+  p: 'f996dbabdac5b948927b501c4b77c5a637b74d565bdb446d98cd57fad49703b9'
+});
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+// Brute-force protection
+let failCount = 0, lockUntil = 0, lockInterval = null;
+
+// ── DATA ──
+let rvStars = 5;
+let blogImgs = []; // [{dataURL, name}]
+
+let reviews = [
+  // {id:1, name:'Emily Davis', role:'Interior Architect', stars:5, img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80', text:'Their attention to detail and willingness to collaborate made the design-to-build process seamless. A rare contractor that truly respects the design intent and delivers on every promise.'},
+  // {id:2, name:'Michael Chen', role:'Property Developer', stars:5, img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80', text:'We have partnered with BuildCraft on four commercial projects and they consistently deliver superior craftsmanship. They are our exclusive build partner going forward — no question.'},
+  // {id:3, name:'Sarah Williams', role:'Business Owner', stars:5, img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80', text:'They completed our office build-out on time and within budget. Communication throughout was genuinely outstanding. I never once had to chase an update — pure professionalism.'},
+  // {id:4, name:'Robert Johnson', role:'Homeowner', stars:5, img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80', text:'From consultation to final walkthrough, the team was professional and attentive. Our kitchen renovation exceeded every expectation and was delivered two weeks ahead of schedule.'},
+  // {id:5, name:'Anita Patel', role:'Retail Developer', stars:5, img:'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&q=80', text:'BuildCraft transformed our retail space in record time. The quality of finish is exceptional and the project manager kept us updated at every single stage. Highly recommend.'},
+];
+
+let gallery = [
+  {id:1, name:'Skyline Penthouse', tag:'Luxury Residential', caption:'Chicago, IL · 12 Weeks', img:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80'},
+  {id:2, name:'Heritage Manor', tag:'Renovation', caption:'Lake Forest, IL', img:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80'},
+  {id:3, name:'Tech Hub Fit-out', tag:'Commercial', caption:'LEED Platinum · River North', img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80'},
+  {id:4, name:'Oakhill Residence', tag:'New Build', caption:'Naperville, IL', img:'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=800&q=80'},
+  {id:5, name:'Harbor Loft Complex', tag:'Multi-Unit', caption:'Evanston, IL · 48 Units', img:'https://images.unsplash.com/photo-1460317442991-0ec209397118?w=800&q=80'},
+  {id:6, name:'Grand Arch Hotel', tag:'Hospitality', caption:'Downtown Chicago', img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80'},
+  {id:7, name:'Meridian Office Park', tag:'Commercial', caption:'Schaumburg, IL', img:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'},
+  {id:8, name:'Elara Villa', tag:'Luxury Residential', caption:'Winnetka, IL', img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80'},
+];
+
+let posts = [
+  {id:3, title:'Sustainable Building Trends Defining 2025', cat:'Design Trends', author:'Marcus Well', date:'March 30, 2025', ts:1743292800,
+   imgs:['https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=80','https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80'],
+   excerpt:'From mass timber to passive house design — the materials and methods shaping the future of construction right now.',
+   body:'Construction is undergoing its most significant transformation in a generation. Driven by tightening energy codes, client demand for lower operating costs, and a genuine shift in values, sustainable building has moved from niche premium to mainstream expectation.\n\nMass Timber is Having Its Moment. Cross-laminated timber (CLT) and glulam structures have matured from architectural novelty to serious structural systems. Mass timber sequesters carbon, delivers extraordinary structural performance, and creates interior environments clients consistently describe as warmer than steel and concrete.\n\nPassive House is Becoming the New Standard. The Passive House standard achieves 70–90% reductions in heating and cooling energy through airtight envelopes, heat recovery ventilation, and optimised solar orientation. The upfront cost premium has narrowed significantly as more builders have adopted the methodology.\n\nEmbodied Carbon is Now Part of the Conversation. In 2025, our clients are increasingly asking about embodied carbon — emissions associated with manufacturing, transporting, and installing materials. This has meaningfully shifted specification decisions across our projects.\n\nSmart Building Integration. From automated shading and HVAC to real-time energy monitoring, smart building systems are no longer limited to corporate campuses. We are specifying integrated systems in residential projects at price points that would have seemed impossible five years ago.'},
+
+  {id:2, title:'Behind the Build: Skyline Penthouse in 12 Weeks', cat:'Project Stories', author:'Elena Rostova', date:'April 18, 2025', ts:1745020800,
+   imgs:['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80','https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80','https://images.unsplash.com/photo-1460317442991-0ec209397118?w=800&q=80'],
+   excerpt:'A behind-the-scenes look at how our team delivered a complex 4,000 sq ft penthouse renovation with zero delays.',
+   body:'When our clients walked us through their raw 4,000 sq ft penthouse on the 42nd floor of a Streeterville high-rise, they had a clear vision: dark timbers, polished concrete, bespoke steel detailing, and panoramic glass walls making the lake feel like part of the room.\n\nThey also had a hard constraint: 12 weeks. A deadline driven by a family relocation from London.\n\nThe Challenge of High-Rise Logistics. Working at elevation in an occupied residential tower introduces unique constraints. All materials must travel in passenger elevators during off-peak hours. Noise work is restricted to specific windows. Dust and debris management must be military-precise. Our site team mapped every delivery, trade, and inspection window before a single tool was unpacked.\n\nConcurrent Trades, Zero Conflicts. Our 12-week delivery came from running structural, mechanical, and finish trades concurrently rather than sequentially — a method requiring tight coordination but dramatically compressing timelines. Our project manager held daily 7am stand-ups with every trade lead.\n\nThe Result. Keys were handed over on day 84 — three days ahead of schedule. The clients moved in as planned, and the penthouse was subsequently featured in Architectural Digest\'s Midwest edition.'},
+
+  {id:1, title:'5 Things to Know Before Your Commercial Build', cat:'Tips & Guides', author:'Robert Stone', date:'May 2, 2025', ts:1746057600,
+   imgs:['https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80','https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=800&q=80'],
+   excerpt:'Planning a commercial construction project? Five critical things every business owner must know before breaking ground.',
+   body:'Planning a commercial construction project is one of the most significant investments a business can make. Done right, it creates a space that elevates your brand and delivers ROI for decades. Done wrong, it drains budgets and delays operations.\n\n1. Budget for the unexpected — always. Even the most meticulously planned project encounters unforeseen conditions. A 10–15% contingency buffer is not optional — it is essential and non-negotiable.\n\n2. Choose your contractor before you finalise your design. Too many clients finalise architectural plans only to discover the design exceeds budget. By involving your build partner early, you align design ambition with real-world costs from day one.\n\n3. Permits take longer than you think. In the Chicago metro area, commercial permits can take 6–12 weeks to process. Factor this into your timeline rigorously and work with a contractor who prepares compliant documentation the first time.\n\n4. Communication is half the project. Establish a clear communication protocol before construction begins. At BuildCraft, every project has a dedicated project manager and a weekly written update.\n\n5. Do not compromise on structure to save on finish. Structural integrity is forever; finishes can always be upgraded later. Your building\'s bones define its value for generations.'},
+];
+
+let nR=6, nG=9, nP=4;
+
+// ── SLIDERS STATE ──
+const sliders = {
+  rv: { idx: 0, perView: ()=> window.innerWidth < 900 ? 1 : 3 },
+  bl: { idx: 0, perView: ()=> window.innerWidth < 900 ? 1 : 4 }
+};
+
+// ── NAV ──
+function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+
+// ══════════════ RENDER REVIEWS SLIDER ══════════════
+function renderReviews(){
+  // latest first (by id desc)
+  const sorted = [...reviews].sort((a,b)=>b.id-a.id);
+  const track = document.getElementById('rv-track');
+  track.innerHTML = sorted.map(r=>`
+    <div class="review-card">
+      <div class="rv-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      <p class="rv-text">"${r.text}"</p>
+      <div class="rv-author">
+        <div class="rv-avatar">${r.img?`<img src="${r.img}" alt="${r.name}">`:r.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+        <div><div class="rv-name">${r.name}</div><div class="rv-role">${r.role}</div></div>
+      </div>
+    </div>`).join('');
+  sliders.rv.total = sorted.length;
+  sliders.rv.idx = 0;
+  updateSlider('rv');
+}
+
+// ══════════════ RENDER BLOG SLIDER ══════════════
+function renderBlogSlider(){
+  const sorted = [...posts].sort((a,b)=>b.ts-a.ts);
+  const latest4 = sorted.slice(0,4);
+  const track = document.getElementById('bl-track');
+  track.innerHTML = latest4.map(p=>`
+    <div class="blog-card" onclick="openPost(${p.id})">
+      <div class="blog-thumb"><img src="${p.imgs[0]}" alt="${p.title}" loading="lazy"></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="blog-cat">${p.cat}</span><span class="blog-date">${p.date}</span></div>
+        <div class="blog-title">${p.title}</div>
+        <div class="blog-excerpt">${p.excerpt}</div>
+        <span class="blog-read">Read Article →</span>
+      </div>
+    </div>`).join('');
+  sliders.bl.total = latest4.length;
+  sliders.bl.idx = 0;
+  updateSlider('bl');
+}
+
+// ══════════════ SLIDER ENGINE ══════════════
+function updateSlider(key){
+  const s = sliders[key];
+  const track = document.getElementById(key+'-track');
+  const pv = s.perView();
+  const cards = track.children;
+  if(!cards.length) return;
+  const cardW = cards[0].offsetWidth + 20; // 20 = margin-right
+  const maxIdx = Math.max(0, s.total - pv);
+  s.idx = Math.max(0, Math.min(s.idx, maxIdx));
+  track.style.transform = `translateX(-${s.idx * cardW}px)`;
+  // dots
+  const dots = document.getElementById(key+'-dots');
+  dots.innerHTML = '';
+  const pages = maxIdx + 1;
+  for(let i=0;i<pages;i++){
+    const d = document.createElement('div');
+    d.className = 'sl-dot' + (key==='bl'?' dark':'') + (i===s.idx?' active':'');
+    d.onclick = ()=>{s.idx=i;updateSlider(key);};
+    dots.appendChild(d);
+  }
+}
+function slideNext(key){sliders[key].idx++;updateSlider(key);}
+function slidePrev(key){sliders[key].idx--;updateSlider(key);}
+window.addEventListener('resize',()=>{updateSlider('rv');updateSlider('bl');});
+
+// ══════════════ GALLERY RENDER ══════════════
+function renderGallery(){
+  document.getElementById('gallery-grid').innerHTML = gallery.map(g=>`
+    <div class="gal-item" onclick="openLightbox('${g.img}','${g.caption}','${g.tag}')">
+      <img src="${g.img}" alt="${g.name}" loading="lazy">
+      <div class="gal-ov"><div class="gal-tag">${g.tag}</div><div class="gal-cap">${g.name}</div></div>
+    </div>`).join('');
+}
+
+// ══════════════ BLOG PAGE (ALL) ══════════════
+function openBlogPage(){
+  const sorted = [...posts].sort((a,b)=>b.ts-a.ts);
+  document.getElementById('bp-grid').innerHTML = sorted.map(p=>`
+    <div class="blog-card" onclick="openPost(${p.id});closeBlogPage()" style="cursor:pointer">
+      <div class="blog-thumb"><img src="${p.imgs[0]}" alt="${p.title}" loading="lazy"></div>
+      <div class="blog-body">
+        <div class="blog-meta"><span class="blog-cat">${p.cat}</span><span class="blog-date">${p.date}</span></div>
+        <div class="blog-title">${p.title}</div>
+        <div class="blog-excerpt">${p.excerpt}</div>
+        <span class="blog-read">Read Article →</span>
+      </div>
+    </div>`).join('');
+  document.getElementById('blog-page').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeBlogPage(){document.getElementById('blog-page').classList.remove('open');document.body.style.overflow='';}
+
+// ══════════════ BLOG POST MODAL + IMAGE GALLERY ══════════════
+let bmSlideIdx = 0, bmImgs = [];
+
+function openPost(id){
+  const p = posts.find(x=>x.id===id); if(!p) return;
+  bmImgs = p.imgs || [];
+  bmSlideIdx = 0;
+  document.getElementById('bm-hero').src = bmImgs[0]||'';
+  document.getElementById('bm-cat').textContent = p.cat;
+  document.getElementById('bm-title').textContent = p.title;
+  document.getElementById('bm-meta').textContent = `By ${p.author} · ${p.date}`;
+
+  // Build body with inline gallery
+  const paras = p.body.split('\n\n');
+  let html = '';
+  paras.forEach((t,i)=>{
+    html += `<p>${t.replace(/\n/g,'<br>')}</p>`;
+  });
+
+  // Image gallery (if more than 1 image)
+  if(bmImgs.length > 1){
+    html += buildBmGallery(bmImgs);
+  }
+
+  document.getElementById('bm-content').innerHTML = html;
+  document.getElementById('blog-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  // init gallery state
+  setTimeout(()=>bmGoTo(0),50);
+}
+
+function buildBmGallery(imgs){
+  const slides = imgs.map((src,i)=>`
+    <div class="bm-img-slide">
+      <img src="${src}" alt="Photo ${i+1}" onclick="openLightbox('${src}','Image ${i+1} of ${imgs.length}','')">
+      <button class="img-expand" onclick="openLightbox('${src}','Image ${i+1} of ${imgs.length}','')" title="Fullscreen">⛶</button>
+    </div>`).join('');
+
+  const thumbs = imgs.map((src,i)=>`
+    <img class="bm-img-thumb${i===0?' active':''}" src="${src}" alt="thumb ${i+1}" onclick="bmGoTo(${i})" id="bm-thumb-${i}">`).join('');
+
+  return `
+  <div class="bm-img-gallery" style="margin:24px 0">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">📸 Photo Gallery (${imgs.length} images)</div>
+    <div style="overflow:hidden;position:relative">
+      <div id="bm-slide-track" style="display:flex;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform">
+        ${slides}
+      </div>
+    </div>
+    <div class="bm-img-nav" style="margin-top:10px">
+      <div class="sl-dots" id="bm-gal-dots" style="margin-right:0"></div>
+      <div style="display:flex;gap:6px">
+        <button class="sl-arrow dark" style="width:36px;height:36px;font-size:14px" onclick="bmGoTo(bmSlideIdx-1)">&#8592;</button>
+        <span class="bm-img-counter" id="bm-slide-counter" style="padding:0 8px;line-height:36px;color:#aaa"></span>
+        <button class="sl-arrow dark" style="width:36px;height:36px;font-size:14px" onclick="bmGoTo(bmSlideIdx+1)">&#8594;</button>
+      </div>
+    </div>
+    <div class="bm-img-thumbs">${thumbs}</div>
+  </div>`;
+}
+
+function bmGoTo(idx){
+  if(!bmImgs.length) return;
+  bmSlideIdx = Math.max(0, Math.min(idx, bmImgs.length-1));
+  const track = document.getElementById('bm-slide-track');
+  if(!track) return;
+  const w = track.parentElement.offsetWidth;
+  track.style.transform = `translateX(-${bmSlideIdx * w}px)`;
+  // update counter
+  const counter = document.getElementById('bm-slide-counter');
+  if(counter) counter.textContent = `${bmSlideIdx+1} / ${bmImgs.length}`;
+  // update thumbs
+  bmImgs.forEach((_,i)=>{
+    const t = document.getElementById('bm-thumb-'+i);
+    if(t) t.className='bm-img-thumb'+(i===bmSlideIdx?' active':'');
+  });
+  // update dots
+  const dots = document.getElementById('bm-gal-dots');
+  if(dots){
+    dots.innerHTML='';
+    bmImgs.forEach((_,i)=>{
+      const d = document.createElement('div');
+      d.className='sl-dot dark'+(i===bmSlideIdx?' active':'');
+      d.onclick=()=>bmGoTo(i);
+      dots.appendChild(d);
+    });
+  }
+}
+
+function closeBlogModal(){
+  document.getElementById('blog-modal').classList.remove('open');
+  document.body.style.overflow='';
+  bmImgs=[];bmSlideIdx=0;
+}
+
+// ══════════════ GALLERY LIGHTBOX ══════════════
+function openLightbox(img,cap,tag){
+  document.getElementById('lb-img').src=img;
+  document.getElementById('lb-cap').textContent=cap;
+  document.getElementById('lb-tag').textContent=tag;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox();});
+
+// ══════════════ ADD CONTENT ══════════════
+function addReview(){
+  const name=document.getElementById('r-name').value.trim();
+  const role=document.getElementById('r-role').value.trim();
+  const text=document.getElementById('r-text').value.trim();
+  if(!name||!text){alert('Please enter client name and review text.');return;}
+  reviews.unshift({id:nR++,name,role:role||'Client',stars:rvStars,img:'',text});
+  document.getElementById('r-name').value='';document.getElementById('r-role').value='';document.getElementById('r-text').value='';
+  setStars(5); showOK('rv-ok'); renderReviews(); renderAdminLists();
+}
+function deleteReview(id){if(!confirm('Delete this review?'))return;reviews=reviews.filter(r=>r.id!==id);renderReviews();renderAdminLists();}
+
+let gPrevURL='';
+function prevGalImg(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();r.onload=e=>{gPrevURL=e.target.result;document.getElementById('g-prev').innerHTML=`<div style="height:80px;overflow:hidden;border:2px solid var(--gold)"><img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover"></div>`;};
+  r.readAsDataURL(f);
+}
+function addGallery(){
+  const name=document.getElementById('g-name').value.trim();
+  const tag=document.getElementById('g-tag').value;
+  const cap=document.getElementById('g-caption').value.trim();
+  if(!name){alert('Please enter a project name.');return;}
+  const img=gPrevURL||'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80';
+  gallery.unshift({id:nG++,name,tag,caption:cap||tag,img});
+  document.getElementById('g-name').value='';document.getElementById('g-caption').value='';
+  document.getElementById('g-file').value='';document.getElementById('g-prev').innerHTML='';gPrevURL='';
+  showOK('gal-ok');renderGallery();renderAdminLists();
+}
+function delGallery(id){if(!confirm('Remove from gallery?'))return;gallery=gallery.filter(g=>g.id!==id);renderGallery();renderAdminLists();}
+
+// Blog multi-image
+function handleBlogImgs(input){
+  const files=Array.from(input.files);if(!files.length)return;
+  const container=document.getElementById('b-img-previews');
+  let loaded=0;
+  files.forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      blogImgs.push({dataURL:e.target.result,name:f.name});
+      loaded++;
+      if(loaded===files.length) renderBlogImgPreviews();
+    };r.readAsDataURL(f);
+  });
+  // reset file input so same file can be added again
+  input.value='';
+}
+function renderBlogImgPreviews(){
+  const c=document.getElementById('b-img-previews');
+  c.innerHTML=blogImgs.map((img,i)=>`
+    <div class="img-prev-wrap${i===0?' is-cover':''}">
+      <img src="${img.dataURL}" alt="${img.name}">
+      <div class="img-prev-badge">${i===0?'Cover':`+${i}`}</div>
+      <button class="img-prev-del" onclick="removeBlogImg(${i})">×</button>
+    </div>`).join('');
+  const dz=document.getElementById('b-drop');
+  dz.innerHTML=`<div class="idz-icon">🖼️</div><div class="idz-txt">${blogImgs.length} image${blogImgs.length!==1?'s':''} selected — <span style="color:var(--gold)">click to add more</span></div>`;
+}
+function removeBlogImg(i){blogImgs.splice(i,1);renderBlogImgPreviews();}
+
+function addPost(){
+  const title=document.getElementById('b-title').value.trim();
+  const cat=document.getElementById('b-cat').value;
+  const author=document.getElementById('b-author').value.trim();
+  const excerpt=document.getElementById('b-excerpt').value.trim();
+  const body=document.getElementById('b-body').value.trim();
+  if(!title||!excerpt){alert('Please fill in title and excerpt.');return;}
+  const now=new Date();
+  const imgs=blogImgs.length?blogImgs.map(x=>x.dataURL):['https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80'];
+  posts.unshift({id:nP++,title,cat,author:author||'BuildCraft Team',
+    date:`${now.toLocaleString('default',{month:'long'})} ${now.getDate()}, ${now.getFullYear()}`,
+    ts:now.getTime(),excerpt,body:body||excerpt,imgs});
+  ['b-title','b-author','b-excerpt','b-body'].forEach(id=>document.getElementById(id).value='');
+  blogImgs=[];
+  document.getElementById('b-img-previews').innerHTML='';
+  document.getElementById('b-drop').innerHTML='<div class="idz-icon">🖼️</div><div class="idz-txt">Click to upload one or more images</div>';
+  showOK('bl-ok');renderBlogSlider();renderAdminLists();
+}
+function delPost(id){if(!confirm('Delete this post?'))return;posts=posts.filter(p=>p.id!==id);renderBlogSlider();renderAdminLists();}
+
+function showOK(id){const el=document.getElementById(id);el.style.display='block';setTimeout(()=>el.style.display='none',3500);}
+
+// ── STARS ──
+function setStars(n){rvStars=n;document.querySelectorAll('#star-sel span').forEach((s,i)=>s.classList.toggle('on',i<n));}
+
+// ══════════════ SECURE LOGIN ══════════════
+function openLogin(){
+  const locked=Date.now()<lockUntil;
+  document.getElementById('login-err').style.display='none';
+  document.getElementById('login-lock').style.display=locked?'block':'none';
+  if(!locked){document.getElementById('login-user').value='';document.getElementById('login-pass').value='';}
+  document.getElementById('login-screen').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLogin(){document.getElementById('login-screen').classList.remove('open');document.body.style.overflow='';}
+
+async function doLogin(){
+  const now=Date.now();
+  const errEl=document.getElementById('login-err');
+  const lockEl=document.getElementById('login-lock');
+  const btn=document.getElementById('login-btn');
+  // Lockout
+  if(now<lockUntil){
+    lockEl.style.display='block';
+    return;
+  }
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  if(!u||!p){errEl.textContent='Please enter both username and password.';errEl.style.display='block';return;}
+  btn.textContent='Verifying…';btn.disabled=true;
+  const [uH,pH]=await Promise.all([sha256(u),sha256(p)]);
+  btn.textContent='Sign In →';btn.disabled=false;
+
+  // Constant-length comparison to avoid timing attacks on string equality
+  const match = uH===AUTH.u && pH===AUTH.p;
+
+  if(match){
+    failCount=0;
+    errEl.style.display='none';lockEl.style.display='none';
+    closeLogin();showActions();
+  } else {
+    failCount++;
+    document.getElementById('login-pass').value='';
+    if(failCount>=5){
+      lockUntil=Date.now()+60000;
+      errEl.style.display='none';
+      lockEl.style.display='block';
+      if(lockInterval)clearInterval(lockInterval);
+      lockInterval=setInterval(()=>{
+        const rem=Math.ceil((lockUntil-Date.now())/1000);
+        document.getElementById('lock-timer').textContent=rem>0?rem:0;
+        if(Date.now()>=lockUntil){clearInterval(lockInterval);lockEl.style.display='none';failCount=0;}
+      },1000);
+    } else {
+      const left=5-failCount;
+      document.getElementById('attempts-left').textContent=`${left} attempt${left!==1?'s':''} remaining before lockout.`;
+      errEl.style.display='block';
+    }
+  }
+}
+
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// ── ACTION / ADMIN ──
+function showActions(){document.getElementById('action-screen').classList.add('open');document.body.style.overflow='hidden';}
+function closeActionScreen(){document.getElementById('action-screen').classList.remove('open');document.body.style.overflow='';}
+
+function openAdmin(section){
+  closeActionScreen();
+  ['reviews','gallery','blog'].forEach(s=>document.getElementById('form-'+s).style.display='none');
+  document.getElementById('form-'+section).style.display='block';
+  document.getElementById('adm-title').textContent={reviews:'⭐ Manage Reviews',gallery:'🖼 Manage Gallery',blog:'📝 Manage Blog'}[section];
+  renderAdminLists();
+  document.getElementById('admin-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');document.body.style.overflow='';}
+function backToActions(){closeAdmin();showActions();}
+
+function renderAdminLists(){
+  const sorted_rv=[...reviews].sort((a,b)=>b.id-a.id);
+  document.getElementById('adm-rv-list').innerHTML=sorted_rv.map(r=>`
+    <div class="a-item">
+      <div><div class="a-item-t">${r.name} — ${'★'.repeat(r.stars)}</div><div class="a-item-s">${r.role} · "${r.text.slice(0,60)}..."</div></div>
+      <button class="btn-del" onclick="deleteReview(${r.id})">Delete</button>
+    </div>`).join('')||'<p style="color:#bbb;font-size:13px">No reviews yet.</p>';
+
+  document.getElementById('adm-gal-list').innerHTML=gallery.map(g=>`
+    <div class="a-item">
+      <div><div class="a-item-t">${g.name}</div><div class="a-item-s">${g.tag} · ${g.caption}</div></div>
+      <button class="btn-del" onclick="delGallery(${g.id})">Delete</button>
+    </div>`).join('');
+
+  const sorted_bl=[...posts].sort((a,b)=>b.ts-a.ts);
+  document.getElementById('adm-bl-list').innerHTML=sorted_bl.map(p=>`
+    <div class="a-item">
+      <div><div class="a-item-t">${p.title}</div><div class="a-item-s">${p.cat} · ${p.author} · ${p.date}</div></div>
+      <button class="btn-del" onclick="delPost(${p.id})">Delete</button>
+    </div>`).join('')||'<p style="color:#bbb;font-size:13px">No posts yet.</p>';
+}
+// --- 4. RENDER UI ---
+function renderAdminReviews(reviewsList) {
+    const listEl = document.getElementById('adm-rv-list');
+    if(!listEl) return;
+
+    listEl.innerHTML = reviewsList.map(r => `
+        <div class="a-item">
+            <div>
+                <div class="a-item-t">${r.name} — ${'★'.repeat(r.stars)}</div>
+                <div class="a-item-s">${r.role} · "${r.text.slice(0, 60)}..."</div>
+            </div>
+            <button class="btn-del" onclick="deleteReview('${r.id}')">Delete</button>
+        </div>
+    `).join('') || '<p style="color:#bbb;font-size:13px">No reviews yet.</p>';
+}
+
+
+// ── QUOTE ──
+function submitQuote(e){e.preventDefault();document.getElementById('quote-ok').style.display='block';}
+
+// ── OVERLAY DISMISS ──
+document.getElementById('admin-overlay').addEventListener('click',e=>{if(e.target.id==='admin-overlay')closeAdmin();});
+document.getElementById('action-screen').addEventListener('click',e=>{if(e.target.id==='action-screen')closeActionScreen();});
+document.getElementById('blog-modal').addEventListener('click',e=>{if(e.target.id==='blog-modal')closeBlogModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeAdmin();closeLogin();closeActionScreen();closeBlogModal();closeBlogPage();}});
+
+// ── INIT ──
+setStars(5);
+renderGallery();
+renderReviews();
+renderBlogSlider();
+// re-sync sliders after fonts load
+window.addEventListener('load',()=>{updateSlider('rv');updateSlider('bl');});
+</script>
+</body>
+</html>
