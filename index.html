@@ -33,6 +33,14 @@ nav{background:var(--white);position:sticky;top:0;z-index:900;border-bottom:1px 
 .nav-admin-btn{background:none;border:1px solid #ccc;color:#666;font-size:12px;padding:6px 14px;cursor:pointer;margin-left:8px;letter-spacing:.05em;text-transform:uppercase;font-family:'Barlow',sans-serif}
 .nav-admin-btn:hover{border-color:var(--gold);color:var(--gold)}
 
+.rv-initials {
+    background: #333;
+    color: white;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-weight: bold; font-size: 14px;
+}
+
 /* HERO */
 #hero{position:relative;height:92vh;min-height:600px;overflow:hidden;display:flex;align-items:center}
 .hero-content{position:relative;z-index:2;padding:0 56px;max-width:640px}
@@ -115,10 +123,102 @@ section{padding:88px 48px}
 #reviews{background:var(--dark);overflow:hidden}
 #reviews .sec-title{color:var(--white)}
 .slider-wrap{position:relative;margin-top:44px}
-.slider-track-outer{overflow:hidden}
-.slider-track{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform}
+/* .slider-track-outer{overflow:hidden} */
+/* .slider-track{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform} */
 /* REVIEW CARDS */
-.review-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);padding:28px;position:relative;flex:0 0 calc(33.333% - 14px);margin-right:20px;min-width:0}
+/* .review-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);padding:28px;position:relative;flex:0 0 calc(33.333% - 14px);margin-right:20px;min-width:0} */
+/* Updated Slider Styles for 4 items */
+.slider-track-outer {
+    overflow: hidden;
+    width: 100%;
+}
+
+/* .slider-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 20px; 
+} */
+ .slider-track {
+    display: flex;
+    gap: 0; /* Let percentage widths handle spacing */
+    transition: transform 0.5s ease-in-out;
+}
+
+/* .review-card {
+   
+    flex: 0 0 calc(25% - 15px); 
+    min-width: calc(25% - 15px);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+} */
+
+.review-card {
+    /* 4 items = 25% each */
+    flex: 0 0 25%; 
+    min-width: 25%;
+    box-sizing: border-box;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Responsive: 2 items on tablet, 1 on mobile */
+@media (max-width: 1024px) {
+    .review-card { flex: 0 0 calc(50% - 10px); min-width: calc(50% - 10px); }
+}
+@media (max-width: 600px) {
+    .review-card { flex: 0 0 100%; min-width: 100%; }
+}
+
+/* Card Action Buttons (Always Visible) */
+/* .card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+} */
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-card-edit { background: var(--gold); color: #000; border:none; padding: 5px 10px; cursor: pointer; font-size: 12px; }
+.btn-card-del { background: #ff4444; color: #fff; border:none; padding: 5px 10px; cursor: pointer; font-size: 12px; }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .review-card { flex: 0 0 50%; min-width: 50%; } /* 2 per row */
+}
+@media (max-width: 600px) {
+    .review-card { flex: 0 0 100%; min-width: 100%; } /* 1 per row */
+}
+.btn-card-edit, .btn-card-del {
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+/* .btn-card-edit { background: var(--gold); color: var(--dark); } */
+/* .btn-card-del { background: rgba(255, 255, 255, 0.1); color: var(--white); } */
+.btn-card-del:hover { background: #ff4444; }
+
+
 .review-card::before{content:'"';font-family:'Playfair Display',serif;font-size:100px;color:rgba(201,146,42,.09);position:absolute;top:-6px;left:16px;line-height:1}
 .rv-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-bottom:12px}
 .rv-text{font-size:14px;color:#ccc;line-height:1.78;font-style:italic;margin-bottom:20px;position:relative;z-index:1}
@@ -277,6 +377,25 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 .a-item-t{font-weight:600;font-size:13px;color:var(--dark);margin-bottom:2px}
 .a-item-s{font-size:12px;color:#bbb}
 .btn-del{background:#fee;border:1px solid #fcc;color:var(--red);font-size:11px;padding:4px 10px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0}
+.btn-edit {
+    /* Changed background to a soft light blue/gold tint */
+    background: #fff9e6; 
+    /* Changed border to match the orange/gold theme */
+    border: 1px solid #ffe699; 
+    /* The text color */
+    color: var(--orange); 
+    
+    /* Kept your existing layout properties */
+    font-size: 11px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
 .star-sel{display:flex;gap:4px}
 .star-sel span{font-size:26px;cursor:pointer;color:#e0e0e0;transition:color .1s;line-height:1;user-select:none}
 .star-sel span.on{color:var(--gold)}
@@ -680,6 +799,10 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 </script>
 
 <script>
+
+  // 1. Initialize Global State
+window.reviews = [];
+
 // ══════════════════════════════════════════════════════════════
 //  SECURITY — Only SHA-256 hashes live in this file.
 //  Plain-text credentials are NEVER stored here.
@@ -706,13 +829,13 @@ let failCount = 0, lockUntil = 0, lockInterval = null;
 let rvStars = 5;
 let blogImgs = []; // [{dataURL, name}]
 
-let reviews = [
-  // {id:1, name:'Emily Davis', role:'Interior Architect', stars:5, img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80', text:'Their attention to detail and willingness to collaborate made the design-to-build process seamless. A rare contractor that truly respects the design intent and delivers on every promise.'},
-  // {id:2, name:'Michael Chen', role:'Property Developer', stars:5, img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80', text:'We have partnered with BuildCraft on four commercial projects and they consistently deliver superior craftsmanship. They are our exclusive build partner going forward — no question.'},
-  // {id:3, name:'Sarah Williams', role:'Business Owner', stars:5, img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80', text:'They completed our office build-out on time and within budget. Communication throughout was genuinely outstanding. I never once had to chase an update — pure professionalism.'},
-  // {id:4, name:'Robert Johnson', role:'Homeowner', stars:5, img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80', text:'From consultation to final walkthrough, the team was professional and attentive. Our kitchen renovation exceeded every expectation and was delivered two weeks ahead of schedule.'},
-  // {id:5, name:'Anita Patel', role:'Retail Developer', stars:5, img:'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&q=80', text:'BuildCraft transformed our retail space in record time. The quality of finish is exceptional and the project manager kept us updated at every single stage. Highly recommend.'},
-];
+// let reviews = [
+//   {id:1, name:'Emily Davis', role:'Interior Architect', stars:5, img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80', text:'Their attention to detail and willingness to collaborate made the design-to-build process seamless. A rare contractor that truly respects the design intent and delivers on every promise.'},
+//   {id:2, name:'Michael Chen', role:'Property Developer', stars:5, img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80', text:'We have partnered with BuildCraft on four commercial projects and they consistently deliver superior craftsmanship. They are our exclusive build partner going forward — no question.'},
+//   {id:3, name:'Sarah Williams', role:'Business Owner', stars:5, img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80', text:'They completed our office build-out on time and within budget. Communication throughout was genuinely outstanding. I never once had to chase an update — pure professionalism.'},
+//   {id:4, name:'Robert Johnson', role:'Homeowner', stars:5, img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80', text:'From consultation to final walkthrough, the team was professional and attentive. Our kitchen renovation exceeded every expectation and was delivered two weeks ahead of schedule.'},
+//   {id:5, name:'Anita Patel', role:'Retail Developer', stars:5, img:'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&q=80', text:'BuildCraft transformed our retail space in record time. The quality of finish is exceptional and the project manager kept us updated at every single stage. Highly recommend.'},
+// ];
 
 let gallery = [
   {id:1, name:'Skyline Penthouse', tag:'Luxury Residential', caption:'Chicago, IL · 12 Weeks', img:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80'},
@@ -754,22 +877,50 @@ const sliders = {
 function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 
 // ══════════════ RENDER REVIEWS SLIDER ══════════════
-function renderReviews(){
-  // latest first (by id desc)
-  const sorted = [...reviews].sort((a,b)=>b.id-a.id);
+// function renderReviews(){
+//   // latest first (by id desc)
+//   const sorted = [...reviews].sort((a,b)=>b.id-a.id);
+//   const track = document.getElementById('rv-track');
+//   track.innerHTML = sorted.map(r=>`
+//     <div class="review-card">
+//       <div class="rv-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+//       <p class="rv-text">"${r.text}"</p>
+//       <div class="rv-author">
+//         <div class="rv-avatar">${r.img?`<img src="${r.img}" alt="${r.name}">`:r.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+//         <div><div class="rv-name">${r.name}</div><div class="rv-role">${r.role}</div></div>
+//       </div>
+//     </div>`).join('');
+//   sliders.rv.total = sorted.length;
+//   sliders.rv.idx = 0;
+//   updateSlider('rv');
+// }
+// 2. Public Slider Render Function
+function renderReviews() {
   const track = document.getElementById('rv-track');
-  track.innerHTML = sorted.map(r=>`
+  if (!track) return;
+
+  const data = window.reviews || [];
+
+  track.innerHTML = data.map(r => `
     <div class="review-card">
-      <div class="rv-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      <div class="rv-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
       <p class="rv-text">"${r.text}"</p>
       <div class="rv-author">
-        <div class="rv-avatar">${r.img?`<img src="${r.img}" alt="${r.name}">`:r.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
-        <div><div class="rv-name">${r.name}</div><div class="rv-role">${r.role}</div></div>
+        <div class="rv-avatar">
+          ${r.img ? `<img src="${r.img}" alt="${r.name}">` : `<div class="rv-initials">${r.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div>`}
+        </div>
+        <div>
+          <div class="rv-name">${r.name}</div>
+          <div class="rv-role">${r.role}</div>
+        </div>
       </div>
     </div>`).join('');
-  sliders.rv.total = sorted.length;
-  sliders.rv.idx = 0;
-  updateSlider('rv');
+
+  if (window.sliders && window.sliders.rv) {
+      sliders.rv.total = data.length;
+      sliders.rv.idx = 0;
+      updateSlider('rv');
+  }
 }
 
 // ══════════════ RENDER BLOG SLIDER ══════════════
@@ -962,7 +1113,7 @@ function addReview(){
   setStars(5); showOK('rv-ok'); renderReviews(); renderAdminLists();
 }
 function deleteReview(id){if(!confirm('Delete this review?'))return;reviews=reviews.filter(r=>r.id!==id);renderReviews();renderAdminLists();}
-
+function editReview(id){if(!confirm('Edit this review?'))return;reviews=reviews.filter(r=>r.id!==id);renderReviews();renderAdminLists();}
 let gPrevURL='';
 function prevGalImg(input){
   const f=input.files[0];if(!f)return;
@@ -1115,7 +1266,10 @@ function renderAdminLists(){
   document.getElementById('adm-rv-list').innerHTML=sorted_rv.map(r=>`
     <div class="a-item">
       <div><div class="a-item-t">${r.name} — ${'★'.repeat(r.stars)}</div><div class="a-item-s">${r.role} · "${r.text.slice(0,60)}..."</div></div>
+      <div>
+        <button class="btn-edit" onclick="editReview(${r.id})">Edit</button>
       <button class="btn-del" onclick="deleteReview(${r.id})">Delete</button>
+      </div>
     </div>`).join('')||'<p style="color:#bbb;font-size:13px">No reviews yet.</p>';
 
   document.getElementById('adm-gal-list').innerHTML=gallery.map(g=>`
@@ -1164,6 +1318,8 @@ renderReviews();
 renderBlogSlider();
 // re-sync sliders after fonts load
 window.addEventListener('load',()=>{updateSlider('rv');updateSlider('bl');});
+
+window.renderReviews = renderReviews;
 </script>
 </body>
 </html>
