@@ -10,6 +10,8 @@
 <script type="module" src="./review.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+<script src="sendmail.js" defer></script>
+
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -585,32 +587,15 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
       <h2>Ready to Build<br>Your Vision?</h2>
       <p>Free on-site consultation. Detailed cost breakdown within 48 hours. No obligations — just complete clarity.</p>
       <ul class="contact-perks">
-        <li>✓ Free On-Site Consultation</li><li>✓ Detailed Cost Breakdown</li>
-        <li>✓ 3D Concept Sketch Included</li><li>✓ 10-Year Structural Warranty</li>
+        <li>✓ Free On-Site Consultation</li>
+        <li>✓ Detailed Cost Breakdown</li>
+        <li>✓ 3D Concept Sketch Included</li>
+        <li>✓ 10-Year Structural Warranty</li>
         <li>✓ In-House Specialists Only</li>
       </ul>
     </div>
-    <!-- <div class="contact-right">
-      <form onsubmit="submitQuote(event)">
-        <div class="cf-group"><label>Full Name</label><input placeholder="John Smith" required></div>
-        <div class="cf-row">
-          <div class="cf-group"><label>Phone</label><input placeholder="+1 800 000 0000"></div>
-          <div class="cf-group"><label>Email</label><input type="email" placeholder="you@email.com"></div>
-        </div>
-        <div class="cf-group"><label>Project Type</label><select><option>New Build</option><option>Renovation</option><option>Commercial</option><option>Architecture Design</option></select></div>
-        <div class="cf-group"><label>Project Details</label><textarea placeholder="Tell us about your project — size, timeline, budget..."></textarea></div>
-        <button type="submit" class="btn-gold" style="width:100%;padding:13px;font-size:14px;text-align:center">Request Free Quote →</button>
-      </form>
-      <div id="quote-ok" style="display:none;margin-top:12px;background:rgba(201,146,42,.1);border:1px solid var(--gold);color:var(--gold-light);padding:11px;font-size:14px">✓ Thank you! We'll contact you within 24 hours.</div>
-    </div>
-  </div> -->
-<div class="contact-right">
-  <div id="quote-ok" data-fs-success style="display:none;margin-top:12px;background:rgba(201,146,42,.1);border:1px solid var(--gold);color:var(--gold-light);padding:11px;font-size:14px">
-    ✓ Thank you! We'll contact you within 24 hours.
-  </div>
 
-  <div data-fs-error style="display:none; color: #ff4444; margin-bottom: 10px;"></div>
-
+    <div class="contact-right">
   <form id="quote-form">
     <div class="cf-group">
       <label>Full Name</label>
@@ -643,14 +628,22 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
       <textarea name="message" placeholder="Tell us about your project..." required data-fs-field></textarea>
     </div>
 
-    <button type="submit" data-fs-submit-btn class="btn-gold" style="width:100%;padding:13px;font-size:14px;text-align:center">
+    <button type="submit" data-fs-submit-btn class="btn-gold" style="width:100%; padding:13px; font-size:14px; text-align:center; cursor:pointer;">
       Request Free Quote →
     </button>
   </form>
+
+  <div id="quote-ok" style="display:none; margin-top:15px; background:rgba(39, 174, 96, 0.1); border:1px solid #27ae60; color:#27ae60; padding:12px; font-size:14px; border-radius:4px; text-align:center; font-weight: 500;">
+    ✓ Mail sent successfully! We will get back to you.
+  </div>
+
+  <div data-fs-error style="display:none; color: #ff4444; margin-top: 10px; font-size: 13px; text-align: center;"></div>
 </div>
-
-
+  </div>
 </section>
+
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+<script src="sendmail.js" defer></script>
 
 <!-- FOOTER -->
 <footer>
