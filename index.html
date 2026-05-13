@@ -3,16 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BuildCraft Construction — Excellence Since 1998</title>
+<title>Vimana Construction — Excellence Since 1998</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<script type="module" src="./register.js"></script>
-<script type="module" src="./login.js"></script>
-<script type="module" src="./review.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
+
+<!-- ① config.js FIRST — non-module, sets window.APP_CONFIG synchronously -->
+<script src="config.js"></script>
+
+<!-- ② Firebase shared init -->
+<script type="module" src="firebase.js"></script>
+
+<!-- ③ Feature modules (all depend on firebase.js) -->
+<script type="module" src="login.js"></script>
+<script type="module" src="register.js"></script>
+<script type="module" src="review.js"></script>
+<script type="module" src="companyperformance.js"></script>
+
+<!-- Formspree (mail) -->
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 <script src="sendmail.js" defer></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--gold:#C9922A;--gold-light:#E5B84A;--dark:#0E0E0E;--dark2:#1A1A1A;--dark3:#242424;--light:#F4F0E8;--cream:#FAF7F0;--white:#FFFFFF;--red:#C0392B}
@@ -36,14 +46,7 @@ nav{background:var(--white);position:sticky;top:0;z-index:900;border-bottom:1px 
 .btn-outline-dark:hover{border-color:var(--gold);color:var(--gold)}
 .nav-admin-btn{background:none;border:1px solid #ccc;color:#666;font-size:12px;padding:6px 14px;cursor:pointer;margin-left:8px;letter-spacing:.05em;text-transform:uppercase;font-family:'Barlow',sans-serif}
 .nav-admin-btn:hover{border-color:var(--gold);color:var(--gold)}
-
-.rv-initials {
-    background: #333;
-    color: white;
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%; font-weight: bold; font-size: 14px;
-}
+.rv-initials{background:#333;color:white;width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:bold;font-size:14px}
 
 /* HERO */
 #hero{position:relative;height:92vh;min-height:600px;overflow:hidden;display:flex;align-items:center}
@@ -100,18 +103,47 @@ section{padding:88px 48px}
 .step-c{width:54px;height:54px;border:2px solid var(--gold);background:var(--dark);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
 .step-n{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--gold)}
 .step-nm{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:5px}
-.step-d{font-size:13px;color:#555;line-height:1.6;max-width:130px}
+.step-d{font-size:13px;color:white;line-height:1.6;max-width:130px}
 .step-w{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:5px}
 
 /* ABOUT */
 #about{background:var(--white)}
+
+/* COMPANY PERFORMANCE */
+#performance{background:var(--cream);position:relative;overflow:hidden}
+#performance::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(201,146,42,.07) 0%,transparent 70%);pointer-events:none}
+.perf-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.perf-card{background:var(--white);border:1px solid rgba(201,146,42,.12);padding:36px 28px 30px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;opacity:0;transform:translateY(32px)}
+.perf-card.in-view{opacity:1;transform:translateY(0);transition:opacity .6s ease,transform .6s ease}
+.perf-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.perf-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.1);border-color:rgba(201,146,42,.35)}
+.perf-card:hover::before{transform:scaleX(1)}
+.perf-icon-wrap{width:56px;height:56px;background:linear-gradient(135deg,rgba(201,146,42,.15),rgba(201,146,42,.05));border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:background .3s}
+.perf-card:hover .perf-icon-wrap{background:linear-gradient(135deg,rgba(201,146,42,.28),rgba(201,146,42,.1))}
+.perf-icon{width:32px;height:32px;color:var(--gold)}
+.perf-num{font-family:'Barlow Condensed',sans-serif;font-size:clamp(44px,5vw,64px);font-weight:900;line-height:1;color:var(--dark);letter-spacing:-.01em;margin-bottom:6px}
+.perf-label{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-bottom:10px}
+.perf-desc{font-size:13px;color:#777;line-height:1.75;margin-bottom:20px}
+.perf-bar{height:3px;background:rgba(0,0,0,.07);border-radius:2px;overflow:hidden}
+.perf-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1) .3s}
+.perf-card.in-view .perf-bar-fill{width:var(--pct)}
+.perf-card:nth-child(1){transition-delay:.05s}
+.perf-card:nth-child(2){transition-delay:.15s}
+.perf-card:nth-child(3){transition-delay:.25s}
+.perf-card:nth-child(4){transition-delay:.35s}
+
+/* SEE MORE BUTTON */
+.btn-see-more{display:inline-flex;align-items:center;gap:10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--dark);border:2px solid var(--dark);padding:14px 32px;text-decoration:none;transition:all .25s;background:transparent}
+.btn-see-more:hover{background:var(--gold);border-color:var(--gold);color:var(--white)}
+.btn-see-more svg{transition:transform .25s}
+.btn-see-more:hover svg{transform:translateX(4px)}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
 .about-img-wrap{position:relative}
 .about-img-wrap img{width:100%;height:500px;object-fit:cover;display:block}
 .about-badge{position:absolute;bottom:-18px;right:-18px;background:var(--gold);padding:24px 20px;text-align:center}
 .about-badge-num{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--white);line-height:1}
 .about-badge-lbl{font-size:11px;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
-.about-text p{font-size:15px;color:#555;line-height:1.9;margin-bottom:16px}
+.about-text p{font-size:15px;color:#444;line-height:1.9;margin-bottom:16px}
 
 /* TEAM */
 #team{background:var(--light)}
@@ -123,106 +155,13 @@ section{padding:88px 48px}
 .team-name{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;text-transform:uppercase;color:var(--dark);margin-bottom:2px}
 .team-role{font-size:12px;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
 
-/* ── REVIEW SLIDER ── */
+/* REVIEW SLIDER */
 #reviews{background:var(--dark);overflow:hidden}
 #reviews .sec-title{color:var(--white)}
 .slider-wrap{position:relative;margin-top:44px}
-/* .slider-track-outer{overflow:hidden} */
-/* .slider-track{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform} */
-/* REVIEW CARDS */
-/* .review-card{background:var(--dark2);border:1px solid rgba(255,255,255,.06);padding:28px;position:relative;flex:0 0 calc(33.333% - 14px);margin-right:20px;min-width:0} */
-/* Updated Slider Styles for 4 items */
-.slider-track-outer {
-    overflow: hidden;
-    width: 100%;
-}
-
-/* .slider-track {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    gap: 20px; 
-} */
- .slider-track {
-    display: flex;
-    gap: 0; /* Let percentage widths handle spacing */
-    transition: transform 0.5s ease-in-out;
-}
-
-/* .review-card {
-   
-    flex: 0 0 calc(25% - 15px); 
-    min-width: calc(25% - 15px);
-    background: rgba(255, 255, 255, 0.05);
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-} */
-
-.review-card {
-    /* 4 items = 25% each */
-    flex: 0 0 25%; 
-    min-width: 25%;
-    box-sizing: border-box;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-/* Responsive: 2 items on tablet, 1 on mobile */
-@media (max-width: 1024px) {
-    .review-card { flex: 0 0 calc(50% - 10px); min-width: calc(50% - 10px); }
-}
-@media (max-width: 600px) {
-    .review-card { flex: 0 0 100%; min-width: 100%; }
-}
-
-/* Card Action Buttons (Always Visible) */
-/* .card-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-} */
-
-.card-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-}
-
-.btn-card-edit { background: var(--gold); color: #000; border:none; padding: 5px 10px; cursor: pointer; font-size: 12px; }
-.btn-card-del { background: #ff4444; color: #fff; border:none; padding: 5px 10px; cursor: pointer; font-size: 12px; }
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-    .review-card { flex: 0 0 50%; min-width: 50%; } /* 2 per row */
-}
-@media (max-width: 600px) {
-    .review-card { flex: 0 0 100%; min-width: 100%; } /* 1 per row */
-}
-.btn-card-edit, .btn-card-del {
-    padding: 6px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    transition: 0.3s;
-}
-
-/* .btn-card-edit { background: var(--gold); color: var(--dark); } */
-/* .btn-card-del { background: rgba(255, 255, 255, 0.1); color: var(--white); } */
-.btn-card-del:hover { background: #ff4444; }
-
-
+.slider-track-outer{overflow:hidden;width:100%}
+.slider-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1);gap:20px}
+.review-card{flex:0 0 25%;min-width:19%;box-sizing:border-box;padding:20px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;justify-content:space-between;position:relative}
 .review-card::before{content:'"';font-family:'Playfair Display',serif;font-size:100px;color:rgba(201,146,42,.09);position:absolute;top:-6px;left:16px;line-height:1}
 .rv-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-bottom:12px}
 .rv-text{font-size:14px;color:#ccc;line-height:1.78;font-style:italic;margin-bottom:20px;position:relative;z-index:1}
@@ -230,39 +169,17 @@ section{padding:88px 48px}
 .rv-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:15px;color:var(--white)}
 .rv-avatar img{width:100%;height:100%;object-fit:cover}
 .rv-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.05em}
-.rv-role{font-size:12px;color:#444}
-/* BLOG CARDS (slider) */
-.blog-card{background:var(--white);border:1px solid #e8e4db;overflow:hidden;flex:0 0 calc(25% - 15px);margin-right:20px;min-width:0;transition:transform .2s,box-shadow .2s;cursor:pointer}
-.blog-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.1)}
-.blog-thumb{height:190px;overflow:hidden;position:relative}
-.blog-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
-.blog-card:hover .blog-thumb img{transform:scale(1.05)}
-.blog-body{padding:22px}
-.blog-meta{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
-.blog-cat{background:var(--gold);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px}
-.blog-date{font-size:11px;color:#bbb}
-.blog-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:var(--dark);margin-bottom:8px;line-height:1.15}
-.blog-excerpt{font-size:13px;color:#666;line-height:1.7}
-.blog-read{display:inline-block;margin-top:12px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold)}
+.rv-role{font-size:12px;color:#666}
+@media(max-width:1024px){.review-card{flex:0 0 calc(50% - 10px);min-width:calc(50% - 10px)}}
+@media(max-width:600px){.review-card{flex:0 0 100%;min-width:100%}}
+
 /* SLIDER ARROWS */
 .slider-arrows{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin-top:24px}
 .sl-arrow{width:44px;height:44px;border:1px solid rgba(255,255,255,.15);background:none;color:var(--white);font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;line-height:1}
 .sl-arrow:hover{border-color:var(--gold);color:var(--gold)}
-.sl-arrow.dark{border-color:#ddd;color:var(--dark)}
-.sl-arrow.dark:hover{border-color:var(--gold);color:var(--gold)}
 .sl-dots{display:flex;gap:6px;align-items:center;margin-right:auto}
 .sl-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .2s}
 .sl-dot.active{background:var(--gold);width:20px;border-radius:3px}
-.sl-dot.dark{background:rgba(0,0,0,.15)}
-.sl-dot.dark.active{background:var(--gold)}
-
-/* BLOG PAGE OVERLAY */
-#blog-page{display:none;position:fixed;inset:0;background:var(--cream);z-index:800;overflow-y:auto}
-#blog-page.open{display:block}
-.bp-header{background:var(--dark);padding:20px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.bp-header h2{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;color:var(--white);letter-spacing:.06em}
-.bp-close{background:none;border:none;color:#aaa;font-size:28px;cursor:pointer;line-height:1}
-.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;padding:40px 48px}
 
 /* CONTACT */
 #contact{padding:0}
@@ -274,7 +191,7 @@ section{padding:88px 48px}
 .contact-perks li{color:rgba(255,255,255,.9);font-size:14px;display:flex;align-items:center;gap:9px}
 .contact-right{padding:56px 48px;background:var(--dark2)}
 .cf-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-.cf-group label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555}
+.cf-group label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white}
 .cf-group input,.cf-group textarea,.cf-group select{background:#111;border:1px solid #222;color:var(--white);padding:11px 13px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;width:100%;transition:border-color .2s}
 .cf-group input:focus,.cf-group textarea:focus{border-color:var(--gold)}
 .cf-group textarea{min-height:100px;resize:vertical}
@@ -285,44 +202,20 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px}
 .footer-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--white);display:inline-block;margin-bottom:12px;cursor:pointer}
 .footer-logo span{color:var(--gold)}
-.footer-desc{font-size:13px;line-height:1.8;color:#2a2a2a;max-width:260px}
+.footer-desc{font-size:13px;line-height:1.8;color:#888;max-width:260px}
 .footer-hdg{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
 .footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
-.footer-links a{font-size:13px;color:#2a2a2a;text-decoration:none;transition:color .2s;cursor:pointer}
+.footer-links a{font-size:13px;color:#555;text-decoration:none;transition:color .2s;cursor:pointer}
 .footer-links a:hover{color:var(--gold)}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#222;flex-wrap:wrap;gap:8px}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#333;flex-wrap:wrap;gap:8px}
 
-/* LIGHTBOX (gallery) */
+/* LIGHTBOX */
 #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:2000;flex-direction:column;align-items:center;justify-content:center}
 #lightbox.open{display:flex}
 #lb-close{position:fixed;top:16px;right:24px;background:none;border:none;color:white;font-size:42px;cursor:pointer;z-index:2001;line-height:1}
 #lb-img{max-width:88vw;max-height:78vh;object-fit:contain;display:block}
 #lb-cap{color:#ccc;font-size:14px;margin-top:14px;text-align:center}
 #lb-tag{color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;margin-top:3px;text-align:center}
-
-/* BLOG POST MODAL */
-#blog-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:1000;align-items:flex-start;justify-content:center;overflow-y:auto;padding:36px 16px}
-#blog-modal.open{display:flex}
-.bm-inner{background:var(--white);max-width:800px;width:100%;margin:auto}
-.bm-hero{width:100%;height:300px;object-fit:cover;display:block}
-.bm-body{padding:36px 40px}
-.bm-cat{display:inline-block;background:var(--gold);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 11px;margin-bottom:12px}
-.bm-title{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;text-transform:uppercase;letter-spacing:.02em;color:var(--dark);line-height:1.04;margin-bottom:8px}
-.bm-meta{font-size:13px;color:#aaa;margin-bottom:24px}
-.bm-text p{font-size:15px;color:#444;line-height:1.9;margin-bottom:16px}
-/* Blog image gallery inside post */
-.bm-img-gallery{margin:24px 0;position:relative}
-.bm-img-slider{display:flex;overflow:hidden;position:relative}
-.bm-img-slide{flex:0 0 100%;transition:transform .38s ease;position:relative}
-.bm-img-slide img{width:100%;height:340px;object-fit:cover;display:block;cursor:zoom-in}
-.bm-img-slide .img-expand{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.55);border:none;color:white;width:34px;height:34px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.bm-img-nav{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-.bm-img-counter{font-size:13px;color:#aaa;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.06em}
-.bm-img-thumbs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.bm-img-thumb{width:60px;height:44px;object-fit:cover;cursor:pointer;opacity:.55;transition:opacity .2s;border:2px solid transparent;flex-shrink:0}
-.bm-img-thumb.active{opacity:1;border-color:var(--gold)}
-.bm-close-btn{display:block;margin:0 40px 36px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:12px;text-align:center;cursor:pointer;background:none;width:calc(100% - 80px)}
-.bm-close-btn:hover{background:var(--gold);color:white}
 
 /* LOGIN */
 #login-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:990;align-items:center;justify-content:center}
@@ -342,7 +235,7 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 /* ACTION CHOOSER */
 #action-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:990;align-items:center;justify-content:center}
 #action-screen.open{display:flex}
-.action-box{background:var(--dark2);border-top:4px solid var(--gold);padding:38px;width:540px;max-width:95vw}
+.action-box{background:var(--dark2);border-top:4px solid var(--gold);padding:38px;width:580px;max-width:95vw}
 .action-box h2{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:4px;letter-spacing:.05em}
 .action-box p{font-size:13px;color:#444;margin-bottom:26px}
 .action-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
@@ -357,16 +250,16 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 /* ADMIN PANEL */
 #admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:991;align-items:center;justify-content:center}
 #admin-overlay.open{display:flex}
-#admin-panel{background:var(--white);width:min(880px,96vw);max-height:92vh;overflow-y:auto;border-top:4px solid var(--gold)}
+#admin-panel{background:var(--white);width:min(900px,96vw);max-height:92vh;overflow-y:auto;border-top:4px solid var(--gold)}
 .adm-head{background:var(--dark);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
 .adm-head h2{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:var(--white);letter-spacing:.08em;text-transform:uppercase}
 .adm-head-r{display:flex;align-items:center;gap:9px}
-.adm-back{background:none;border:1px solid #2a2a2a;color:#888;font-size:12px;padding:5px 13px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.adm-back{background:none;border:1px solid white;color:#888;font-size:12px;padding:5px 13px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 .adm-back:hover{border-color:var(--gold);color:var(--gold)}
 .adm-x{background:none;border:none;color:#888;font-size:26px;cursor:pointer;line-height:1}
 .adm-body{padding:28px}
 .af-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-.af-group label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#555}
+.af-group label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#444}
 .af-group input,.af-group textarea,.af-group select{border:1px solid #e0e0e0;padding:10px 13px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s;width:100%;background:var(--white)}
 .af-group input:focus,.af-group textarea:focus{border-color:var(--gold)}
 .af-group textarea{min-height:90px;resize:vertical}
@@ -377,33 +270,16 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 .a-ssub{font-size:13px;color:#999;margin-bottom:20px;line-height:1.6}
 .a-ok{background:#f0faf0;border:1px solid #c0e8c0;color:#2a7a2a;padding:9px 13px;font-size:13px;margin-bottom:14px;display:none}
 .a-list{display:flex;flex-direction:column;gap:9px;margin-top:16px}
-.a-item{border:1px solid #eeeeee;padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:#fafaf8}
+.a-item{border:1px solid #eee;padding:12px 15px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:#fafaf8}
 .a-item-t{font-weight:600;font-size:13px;color:var(--dark);margin-bottom:2px}
 .a-item-s{font-size:12px;color:#bbb}
-.btn-del{background:#fee;border:1px solid #fcc;color:var(--red);font-size:11px;padding:4px 10px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0}
-.btn-edit {
-    /* Changed background to a soft light blue/gold tint */
-    background: #fff9e6; 
-    /* Changed border to match the orange/gold theme */
-    border: 1px solid #ffe699; 
-    /* The text color */
-    color: var(--orange); 
-    
-    /* Kept your existing layout properties */
-    font-size: 11px;
-    padding: 4px 10px;
-    cursor: pointer;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 600;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    transition: all 0.2s ease;
-}
+.a-item-btns{display:flex;gap:6px;flex-shrink:0}
+.btn-del{background:#fee;border:1px solid #fcc;color:#c0392b;font-size:11px;padding:4px 10px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0}
+.btn-edit{background:#fff9e6;border:1px solid #ffe699;color:#7a5c00;font-size:11px;padding:4px 10px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0;transition:all .2s}
 .star-sel{display:flex;gap:4px}
 .star-sel span{font-size:26px;cursor:pointer;color:#e0e0e0;transition:color .1s;line-height:1;user-select:none}
 .star-sel span.on{color:var(--gold)}
-.adm-divider{border:none;border-top:1px solid #eeeeee;margin:24px 0}
+.adm-divider{border:none;border-top:1px solid #eee;margin:24px 0}
 .list-hd{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;text-transform:uppercase;margin-bottom:9px;color:var(--dark)}
 /* img uploader */
 .img-drop-zone{border:2px dashed #e0e0e0;padding:20px;text-align:center;cursor:pointer;background:#fafaf8;transition:border-color .2s;margin-bottom:9px}
@@ -413,9 +289,16 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 .img-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:7px;margin-top:7px}
 .img-prev-wrap{position:relative;height:68px;overflow:hidden;border:2px solid #eee}
 .img-prev-wrap img{width:100%;height:100%;object-fit:cover}
-.img-prev-badge{position:absolute;top:2px;left:2px;font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 5px;text-transform:uppercase;background:rgba(0,0,0,.6);color:white}
-.img-prev-del{position:absolute;top:2px;right:2px;background:rgba(0,0,0,.55);border:none;color:white;width:18px;height:18px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;line-height:1}
-.img-prev-wrap.is-cover{border-color:var(--gold)}
+
+/* Gallery admin card grid */
+.adm-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:16px}
+.adm-gal-card{position:relative;background:#fafaf8;border:1px solid #eee;overflow:hidden;border-radius:2px}
+.adm-gal-card img{width:100%;height:110px;object-fit:cover;display:block}
+.adm-gal-card-info{padding:8px 10px}
+.adm-gal-card-name{font-size:12px;font-weight:700;color:var(--dark);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm-gal-card-tag{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.adm-gal-card-btns{display:flex;gap:5px}
+.adm-gal-card-btns button{flex:1;font-size:10px;padding:3px 6px;border:none;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
 
 @media(max-width:900px){
   nav{padding:0 14px}.nav-links{display:none}
@@ -430,28 +313,30 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
   .action-cards{grid-template-columns:1fr}
   .af-row,.cf-row{grid-template-columns:1fr}
   .review-card{flex:0 0 calc(90% - 14px)}
-  .blog-card{flex:0 0 calc(85% - 14px)}
-  .bp-grid{padding:20px 16px}
+  .perf-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+}
+@media(max-width:580px){
+  .perf-grid{grid-template-columns:1fr;gap:14px}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px}
 }
 </style>
 </head>
 <body>
 
 <div id="topbar">
-  <span>📍 123 Industrial Blvd, Suite 400, Chicago, IL</span>
-  <span>📞 <a href="tel:+18001234567">+1 (800) 123-4567</a></span>
-  <span>✉ <a href="mailto:hello@buildcraft.com">hello@buildcraft.com</a></span>
+  <span>📍 Bengaluru, Karnataka, India</span>
+  <span>📞 <a href="tel:+919876543210">+91 98765 43210</a></span>
+  <span>✉ <a href="mailto:raswanth@vimanaconstruction.com">raswanth@vimanaconstruction.com</a></span>
 </div>
 
 <nav>
-  <span class="logo" onclick="goTo('hero')">BUILD<span>CRAFT</span></span>
+  <span class="logo" onclick="goTo('hero')">VIMANA<span>BUILD</span></span>
   <ul class="nav-links">
     <li><a onclick="goTo('hero')">Home</a></li>
     <li><a onclick="goTo('services')">Services</a></li>
-    <li><a onclick="goTo('gallery')">Projects</a></li>
+    <li><a href="gallery.html">Projects</a></li>
     <li><a onclick="goTo('about')">About</a></li>
     <li><a onclick="goTo('reviews')">Reviews</a></li>
-    <li><a onclick="goTo('blog')">Blog</a></li>
     <li><a onclick="goTo('contact')">Contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:6px">
@@ -471,14 +356,16 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
     <div class="hero-btns">
       <button class="btn-gold" style="padding:14px 34px;font-size:14px" onclick="goTo('gallery')">View Our Work</button>
       <button class="btn-outline-dark" onclick="goTo('process')">How We Build</button>
+      <button onclick="showAction()">Show action</button>
     </div>
   </div>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="stat-num">450+</div><div class="stat-label">Projects Completed</div></div>
+  <!-- <div class="hero-stats">
+    <div class="hero-stat"><div class="stat-num" >450+</div><div class="stat-label">Projects Completed</div></div>
     <div class="hero-stat"><div class="stat-num">26</div><div class="stat-label">Years Experience</div></div>
     <div class="hero-stat"><div class="stat-num">99%</div><div class="stat-label">On-Time Delivery</div></div>
     <div class="hero-stat"><div class="stat-num">88%</div><div class="stat-label">Repeat Clients</div></div>
-  </div>
+  </div> -->
+  
 </section>
 
 <!-- SERVICES -->
@@ -502,13 +389,19 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
     <button class="btn-gold" onclick="goTo('contact')">Start Your Project</button>
   </div>
   <div class="gallery-grid" id="gallery-grid"></div>
+  <div style="text-align:center;margin-top:40px">
+    <a href="gallery.html" class="btn-see-more">
+      <span>See More Projects</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
 </section>
 
 <!-- PROCESS -->
 <section id="process">
   <div class="sec-hdr">
-    <div><div class="sec-eye">Our Method</div><h2 class="sec-title" style="color:var(--white)">The BuildCraft<br>Process</h2></div>
-    <p class="sec-sub" style="color:#555">A transparent, stage-gated workflow engineered for efficiency and zero surprises at every step.</p>
+    <div><div class="sec-eye">Our Method</div><h2 class="sec-title" style="color:var(--white)">The Vimana<br>Process</h2></div>
+    <p class="sec-sub" style="color:white">A transparent, stage-gated workflow engineered for efficiency and zero surprises at every step.</p>
   </div>
   <div class="proc-steps">
     <div class="proc-step"><div class="step-c"><div class="step-n">01</div></div><div class="step-nm">Discovery</div><div class="step-d">Consultation and site feasibility.</div><div class="step-w">Week 1</div></div>
@@ -520,17 +413,75 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
   </div>
 </section>
 
+<!-- COMPANY PERFORMANCE SECTION -->
+<section id="performance">
+  <div class="sec-hdr" style="margin-bottom:56px">
+    <div>
+      <div class="sec-eye">By the Numbers</div>
+      <h2 class="sec-title">Company<br>Performance</h2>
+    </div>
+    <p class="sec-sub">Milestones that reflect our unwavering commitment to quality, reliability, and client satisfaction.</p>
+  </div>
+  <div class="perf-grid">
+    <!-- Card 1: Projects -->
+    <div class="perf-card" data-perf>
+      <div class="perf-icon-wrap">
+        <svg class="perf-icon" viewBox="0 0 48 48" fill="none"><rect x="6" y="30" width="8" height="12" rx="1" fill="currentColor" opacity=".25"/><rect x="20" y="20" width="8" height="22" rx="1" fill="currentColor" opacity=".55"/><rect x="34" y="10" width="8" height="32" rx="1" fill="currentColor"/><path d="M8 26l10-10 8 6 14-16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40" cy="6" r="3" fill="currentColor"/></svg>
+      </div>
+      <!-- Added class "perf-num" to target this element specifically in JS -->
+      <div class="perf-num">0</div>
+      <div class="perf-label">Projects Completed</div>
+      <div class="perf-desc">Residential, commercial, and hospitality builds delivered to the highest standard</div>
+      <div class="perf-bar"><div class="perf-bar-fill"></div></div>
+    </div>
+
+    <!-- Card 2: Years -->
+    <div class="perf-card" data-perf>
+      <div class="perf-icon-wrap">
+        <svg class="perf-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="2.5"/><path d="M24 14v10l6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10l4 4M40 10l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".5"/></svg>
+      </div>
+      <div class="perf-num">0</div>
+      <div class="perf-label">Years of Experience</div>
+      <div class="perf-desc">A quarter-century of mastery in every trade, from foundation to finishing</div>
+      <div class="perf-bar"><div class="perf-bar-fill"></div></div>
+    </div>
+
+    <!-- Card 3: Delivery -->
+    <div class="perf-card" data-perf>
+      <div class="perf-icon-wrap">
+        <svg class="perf-icon" viewBox="0 0 48 48" fill="none"><path d="M10 24l10 10L38 14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="2.5" opacity=".3"/></svg>
+      </div>
+      <div class="perf-num">0</div>
+      <div class="perf-label">On-Time Delivery</div>
+      <div class="perf-desc">Near-perfect record of meeting deadlines through meticulous scheduling</div>
+      <div class="perf-bar"><div class="perf-bar-fill"></div></div>
+    </div>
+
+    <!-- Card 4: Referral -->
+    <div class="perf-card" data-perf>
+      <div class="perf-icon-wrap">
+        <svg class="perf-icon" viewBox="0 0 48 48" fill="none"><path d="M16 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8-8-3.6-8-8z" stroke="currentColor" stroke-width="2.5"/><path d="M8 40c0-6.6 7.2-12 16-12s16 5.4 16 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity=".6"/></svg>
+      </div>
+      <div class="perf-num">0</div>
+      <div class="perf-label">Referral Clients</div>
+      <div class="perf-desc">Clients who trusted us based on word-of-mouth from satisfied customers</div>
+      <div class="perf-bar"><div class="perf-bar-fill"></div></div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ABOUT -->
 <section id="about">
   <div class="about-grid">
     <div class="about-img-wrap">
-      <img src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=800&q=80" alt="BuildCraft team">
-      <div class="about-badge"><div class="about-badge-num">26</div><div class="about-badge-lbl">Years of Excellence</div></div>
+      <img src="https://images.unsplash.com/photo-1516156008625-3a9d6067fab5?w=800&q=80" alt="Vimana Construction team">
+      <div class="about-badge"><div class="about-badge-num" id="hero-stat-years">0</div><div class="about-badge-lbl">Years of Excellence</div></div>
     </div>
     <div class="about-text">
-      <div class="sec-eye">About BuildCraft</div>
+      <div class="sec-eye">About Vimana</div>
       <h2 class="sec-title">We Build More<br>Than Structures</h2>
-      <p>Founded in 1998 by master builder Robert Stone, BuildCraft has grown from a two-man residential crew into one of Chicago's most trusted full-service construction firms. Over 26 years and 450+ projects — from intimate luxury renovations to landmark commercial developments.</p>
+      <p>Founded with a vision to redefine construction standards in Karnataka, Vimana Construction has grown into one of Bengaluru's most trusted full-service firms. Over 26 years and 450+ projects — from intimate luxury renovations to landmark commercial developments.</p>
       <p>Our philosophy: every project deserves obsessive attention to detail, transparent communication, and a relentless commitment to quality. We don't outsource critical work. Our in-house team of certified structural engineers, architects, and project managers ensures every build is delivered on time, on budget, and beyond expectation.</p>
       <p>Every new build comes with a <strong>10-year structural warranty</strong> — because we stand behind every nail, beam, and finish we produce.</p>
       <button class="btn-gold" style="margin-top:10px;padding:14px 32px" onclick="goTo('contact')">Work With Us</button>
@@ -542,10 +493,10 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 <section id="team">
   <div class="sec-hdr"><div><div class="sec-eye">Our People</div><h2 class="sec-title">Meet the Team</h2></div></div>
   <div class="team-grid">
-    <div class="team-card"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="Robert Stone"><div class="team-info"><div class="team-name">Robert Stone</div><div class="team-role">Founder & CEO</div></div></div>
-    <div class="team-card"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Elena Rostova"><div class="team-info"><div class="team-name">Elena Rostova</div><div class="team-role">Design Director</div></div></div>
-    <div class="team-card"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Marcus Well"><div class="team-info"><div class="team-name">Marcus Well</div><div class="team-role">Lead Architect</div></div></div>
-    <div class="team-card"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Priya Nair"><div class="team-info"><div class="team-name">Priya Nair</div><div class="team-role">Project Manager</div></div></div>
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="Raswanth Balu"><div class="team-info"><div class="team-name">Raswanth Balu</div><div class="team-role">Founder & CEO</div></div></div>
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Design Director"><div class="team-info"><div class="team-name">Elena Rostova</div><div class="team-role">Design Director</div></div></div>
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Lead Architect"><div class="team-info"><div class="team-name">Marcus Well</div><div class="team-role">Lead Architect</div></div></div>
+    <div class="team-card"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Project Manager"><div class="team-info"><div class="team-name">Priya Nair</div><div class="team-role">Project Manager</div></div></div>
   </div>
 </section>
 
@@ -564,22 +515,6 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
   </div>
 </section>
 
-<!-- BLOG SLIDER -->
-<section id="blog" style="background:var(--cream)">
-  <div class="sec-hdr">
-    <div><div class="sec-eye" style="color:var(--gold)">News & Stories</div><h2 class="sec-title">Latest from<br>BuildCraft</h2></div>
-    <button class="btn-gold" onclick="openBlogPage()">See All Blogs →</button>
-  </div>
-  <div class="slider-wrap">
-    <div class="slider-track-outer"><div class="slider-track" id="bl-track"></div></div>
-    <div class="slider-arrows">
-      <div class="sl-dots" id="bl-dots"></div>
-      <button class="sl-arrow dark" onclick="slidePrev('bl')">&#8592;</button>
-      <button class="sl-arrow dark" onclick="slideNext('bl')">&#8594;</button>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact" style="padding:0">
   <div class="contact-grid">
@@ -594,79 +529,85 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
         <li>✓ In-House Specialists Only</li>
       </ul>
     </div>
-
     <div class="contact-right">
-  <form id="quote-form">
-    <div class="cf-group">
-      <label>Full Name</label>
-      <input name="name" placeholder="John Smith" required data-fs-field>
-    </div>
-    
-    <div class="cf-row">
-      <div class="cf-group">
-        <label>Phone</label>
-        <input name="phone" placeholder="+1 800 000 0000" data-fs-field>
+      <form id="quote-form">
+        <div class="cf-group">
+          <label>Full Name</label>
+          <input name="name" placeholder="e.g. Ravi Kumar" required data-fs-field>
+        </div>
+        <div class="cf-row">
+          <div class="cf-group">
+            <label>Phone</label>
+            <input name="phone" placeholder="+91 98765 43210" data-fs-field>
+          </div>
+          <div class="cf-group">
+            <label>Email</label>
+            <input name="email" type="email" placeholder="you@email.com" required data-fs-field>
+          </div>
+        </div>
+        <div class="cf-group">
+          <label>Project Type</label>
+          <select name="project_type" data-fs-field>
+            <option>New Build</option>
+            <option>Renovation</option>
+            <option>Commercial</option>
+            <option>Architecture Design</option>
+          </select>
+        </div>
+        <div class="cf-group">
+          <label>Project Details</label>
+          <textarea name="message" placeholder="Tell us about your project..." required data-fs-field></textarea>
+        </div>
+        <button type="submit" data-fs-submit-btn class="btn-gold" style="width:100%;padding:13px;font-size:14px;text-align:center;cursor:pointer;">
+          Request Free Quote →
+        </button>
+      </form>
+      <div id="quote-ok" style="display:none;margin-top:15px;background:rgba(39,174,96,.1);border:1px solid #27ae60;color:#27ae60;padding:12px;font-size:14px;border-radius:4px;text-align:center;font-weight:500;">
+        ✓ Message sent successfully! We will get back to you shortly.
       </div>
-      <div class="cf-group">
-        <label>Email</label>
-        <input name="email" type="email" placeholder="you@email.com" required data-fs-field>
-      </div>
+      <div data-fs-error style="display:none;color:#ff4444;margin-top:10px;font-size:13px;text-align:center;"></div>
     </div>
-
-    <div class="cf-group">
-      <label>Project Type</label>
-      <select name="project_type" data-fs-field>
-        <option>New Build</option>
-        <option>Renovation</option>
-        <option>Commercial</option>
-        <option>Architecture Design</option>
-      </select>
-    </div>
-
-    <div class="cf-group">
-      <label>Project Details</label>
-      <textarea name="message" placeholder="Tell us about your project..." required data-fs-field></textarea>
-    </div>
-
-    <button type="submit" data-fs-submit-btn class="btn-gold" style="width:100%; padding:13px; font-size:14px; text-align:center; cursor:pointer;">
-      Request Free Quote →
-    </button>
-  </form>
-
-  <div id="quote-ok" style="display:none; margin-top:15px; background:rgba(39, 174, 96, 0.1); border:1px solid #27ae60; color:#27ae60; padding:12px; font-size:14px; border-radius:4px; text-align:center; font-weight: 500;">
-    ✓ Mail sent successfully! We will get back to you.
-  </div>
-
-  <div data-fs-error style="display:none; color: #ff4444; margin-top: 10px; font-size: 13px; text-align: center;"></div>
-</div>
   </div>
 </section>
-
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
-<script src="sendmail.js" defer></script>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div>
-      <span class="footer-logo" onclick="goTo('hero')">BUILD<span>CRAFT</span></span>
+      <span class="footer-logo" onclick="goTo('hero')">VIMANA<span>BUILD</span></span>
       <p class="footer-desc">Elevating construction standards since 1998. We build spaces that inspire, endure, and perform — on time, on budget, every time.</p>
     </div>
     <div>
       <div class="footer-hdg">Services</div>
-      <ul class="footer-links"><li><a onclick="goTo('services')">Residential Construction</a></li><li><a onclick="goTo('services')">Commercial Builds</a></li><li><a onclick="goTo('services')">Project Management</a></li><li><a onclick="goTo('services')">Interior Renovation</a></li><li><a onclick="goTo('services')">Architectural Design</a></li></ul>
+      <ul class="footer-links">
+        <li><a onclick="goTo('services')">Residential Construction</a></li>
+        <li><a onclick="goTo('services')">Commercial Builds</a></li>
+        <li><a onclick="goTo('services')">Project Management</a></li>
+        <li><a onclick="goTo('services')">Interior Renovation</a></li>
+        <li><a onclick="goTo('services')">Architectural Design</a></li>
+      </ul>
     </div>
     <div>
       <div class="footer-hdg">Company</div>
-      <ul class="footer-links"><li><a onclick="goTo('about')">About Us</a></li><li><a onclick="goTo('team')">Our Team</a></li><li><a onclick="goTo('reviews')">Client Reviews</a></li><li><a onclick="openBlogPage()">News & Blog</a></li><li><a onclick="goTo('contact')">Contact Us</a></li></ul>
+      <ul class="footer-links">
+        <li><a onclick="goTo('about')">About Us</a></li>
+        <li><a onclick="goTo('team')">Our Team</a></li>
+        <li><a onclick="goTo('reviews')">Client Reviews</a></li>
+        <li><a onclick="goTo('contact')">Contact Us</a></li>
+      </ul>
     </div>
     <div>
       <div class="footer-hdg">Contact</div>
-      <ul class="footer-links"><li><a>123 Industrial Blvd, Chicago, IL</a></li><li><a href="tel:+18001234567">+1 (800) 123-4567</a></li><li><a href="mailto:hello@buildcraft.com">hello@buildcraft.com</a></li><li><a onclick="goTo('contact')">Get a Free Quote</a></li></ul>
+      <ul class="footer-links">
+        <li><a>Bengaluru, Karnataka, India</a></li>
+        <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+        <li><a href="mailto:raswanth@vimanaconstruction.com">raswanth@vimanaconstruction.com</a></li>
+        <li><a onclick="goTo('contact')">Get a Free Quote</a></li>
+      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 BuildCraft Inc. All rights reserved.</span>
+    <span>© <span id="footer-year"></span> Vimana Construction. All rights reserved.</span>
     <button class="nav-admin-btn" onclick="openLogin()">⚙ Owner Login</button>
   </div>
 </footer>
@@ -675,69 +616,33 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
 <div id="lightbox">
   <button id="lb-close" onclick="closeLightbox()">×</button>
   <img id="lb-img" src="" alt="">
-  <div id="lb-cap"></div><div id="lb-tag"></div>
+  <div id="lb-cap"></div>
+  <div id="lb-tag"></div>
 </div>
 
-<!-- BLOG POST MODAL -->
-<div id="blog-modal">
-  <div class="bm-inner" id="bm-inner">
-    <img id="bm-hero" class="bm-hero" src="" alt="">
-    <div class="bm-body">
-      <span id="bm-cat" class="bm-cat"></span>
-      <h2 id="bm-title" class="bm-title"></h2>
-      <p id="bm-meta" class="bm-meta"></p>
-      <div id="bm-content"></div>
-    </div>
-    <button class="bm-close-btn" onclick="closeBlogModal()">← Back to Blog</button>
-  </div>
-</div>
-
-<!-- ALL BLOGS PAGE -->
-<div id="blog-page">
-  <div class="bp-header">
-    <h2>All Blog Posts</h2>
-    <button class="bp-close" onclick="closeBlogPage()">×</button>
-  </div>
-  <div class="bp-grid" id="bp-grid"></div>
-</div>
-
-<!-- LOGIN -->
+<!-- LOGIN MODAL -->
 <div id="login-screen">
-  <!-- signup -->
-  <!-- <div class="login-box">
-    <h2>signup Owner Login</h2>
+  <div class="login-box">
+    <h2>Owner Login</h2>
     <p>Sign in to manage your website content.</p>
     <div id="login-err" class="login-err">Incorrect credentials. <span id="attempts-left"></span></div>
     <div id="login-lock" class="login-lock">Too many attempts. Locked for <span id="lock-timer">60</span>s.</div>
-     <input type="text" id="login-user" placeholder="Username" autocomplete="off"> 
-     <input type="email" id="login-user" placeholder="Email">
-    <input type="password" id="login-pass" placeholder="Password">
-    <button class="login-btn-main" id="login-btn" onclick="doSignup()">Sign In →</button>
-    <button class="login-cancel" onclick="closeLogin()">Cancel</button>
-  </div> -->
-  <!-- signin  -->
-   <div class="login-box">
-    <h2>signin Owner Login</h2>
-    <p>Sign in to manage your website content.</p>
-    <div id="login-err" class="login-err">Incorrect credentials. <span id="attempts-left"></span></div>
-    <div id="login-lock" class="login-lock">Too many attempts. Locked for <span id="lock-timer">60</span>s.</div>
-    <!-- <input type="text" id="login-user" placeholder="Username" autocomplete="off"> -->
-     <input type="email" id="login-user" placeholder="Email">
-    <input type="password" id="login-pass" placeholder="Password">
-     <button class="login-btn-main" id="login-btn" onclick="doLogin()">Sign In →</button>
+    <input type="email" id="login-user" placeholder="Email" autocomplete="email">
+    <input type="password" id="login-pass" placeholder="Password" autocomplete="current-password">
+    <button class="login-btn-main" onClick="doLogin()" id="login-btn">Sign In →</button>
     <button class="login-cancel" onclick="closeLogin()">Cancel</button>
   </div>
 </div>
 
-<!-- ACTION CHOOSER -->
+<!-- ACTION CHOOSER (admin only) -->
 <div id="action-screen">
   <div class="action-box">
     <h2>Welcome, Owner</h2>
     <p>What would you like to update on the site today?</p>
     <div class="action-cards">
-      <div class="action-card" onclick="openAdmin('reviews')"><span class="ac-icon">⭐</span><div class="ac-label">Add Review</div><div class="ac-desc">Publish a new client testimonial</div></div>
-      <div class="action-card" onclick="openAdmin('gallery')"><span class="ac-icon">🖼️</span><div class="ac-label">Add Photo</div><div class="ac-desc">Upload a project photo to gallery</div></div>
-      <div class="action-card" onclick="openAdmin('blog')"><span class="ac-icon">📝</span><div class="ac-label">Add Blog Post</div><div class="ac-desc">Write and publish a new article</div></div>
+      <div class="action-card" onclick="openAdmin('reviews')"><span class="ac-icon">⭐</span><div class="ac-label">Reviews</div><div class="ac-desc">Manage client testimonials</div></div>
+      <div class="action-card" onclick="openAdmin('gallery')"><span class="ac-icon">🖼️</span><div class="ac-label">Gallery</div><div class="ac-desc">Upload and manage project photos</div></div>
+      <div class="action-card" onclick="openAdmin('performance')"><span class="ac-icon">📊</span><div class="ac-label">Stats</div><div class="ac-desc">Update company performance numbers</div></div>
     </div>
     <button class="action-close-btn" onclick="closeActionScreen()">Close</button>
   </div>
@@ -748,7 +653,10 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
   <div id="admin-panel">
     <div class="adm-head">
       <h2 id="adm-title">Site Manager</h2>
-      <div class="adm-head-r"><button class="adm-back" onclick="backToActions()">← Back</button><button class="adm-x" onclick="closeAdmin()">×</button></div>
+      <div class="adm-head-r">
+        <button class="adm-back" onclick="backToActions()">← Back</button>
+        <button class="adm-x" onclick="closeAdmin()">×</button>
+      </div>
     </div>
     <div class="adm-body">
 
@@ -756,622 +664,492 @@ footer{background:var(--dark);color:#444;padding:56px 48px 28px}
       <div id="form-reviews" style="display:none">
         <div class="a-stitle">Add New Client Review</div>
         <div class="a-ssub">Reviews are shown latest-first in the homepage slider.</div>
-        <div id="rv-ok" class="a-ok">✓ Review added and live!</div>
+        <div id="rv-ok" class="a-ok">✓ Review saved and live!</div>
         <div class="af-row">
-          <div class="af-group"><label>Client Name</label><input id="r-name" placeholder="e.g. Jane Smith"></div>
+          <div class="af-group"><label>Client Name</label><input id="r-name" placeholder="e.g. Anitha Sharma"></div>
           <div class="af-group"><label>Role / Title</label><input id="r-role" placeholder="e.g. Homeowner"></div>
         </div>
         <div class="af-group"><label>Star Rating</label><div class="star-sel" id="star-sel"><span onclick="setStars(1)">★</span><span onclick="setStars(2)">★</span><span onclick="setStars(3)">★</span><span onclick="setStars(4)">★</span><span onclick="setStars(5)">★</span></div></div>
         <div class="af-group"><label>Review Text</label><textarea id="r-text" placeholder="Write the client's testimonial..."></textarea></div>
-          <button class="a-submit" onclick="addReview()">Add Review →</button>
-        <hr class="adm-divider"><div class="list-hd">Existing Reviews</div>
+        <button class="a-submit" onclick="window.addReview && window.addReview()">Add Review →</button>
+        <hr class="adm-divider">
+        <div class="list-hd">Existing Reviews</div>
         <div class="a-list" id="adm-rv-list"></div>
       </div>
 
       <!-- GALLERY FORM -->
       <div id="form-gallery" style="display:none">
-        <div class="a-stitle">Add Gallery Photo</div>
-        <div class="a-ssub">Upload a photo from your device and fill in the project details.</div>
+        <div class="a-stitle">Manage Gallery Photos</div>
+        <div class="a-ssub">Upload project photos with details. Images are stored in Firebase Storage.</div>
         <div id="gal-ok" class="a-ok">✓ Photo added to gallery!</div>
         <div class="af-row">
-          <div class="af-group"><label>Project Name</label><input id="g-name" placeholder="e.g. Lakeview Residence"></div>
-          <div class="af-group"><label>Category</label><select id="g-tag"><option>Luxury Residential</option><option>New Build</option><option>Renovation</option><option>Commercial</option><option>Multi-Unit</option><option>Hospitality</option><option>Architecture</option></select></div>
+          <div class="af-group"><label>Project Name</label><input id="g-name" placeholder="e.g. Whitefield Villa"></div>
+          <div class="af-group"><label>Category</label>
+            <select id="g-tag">
+              <option>Luxury Residential</option>
+              <option>New Build</option>
+              <option>Renovation</option>
+              <option>Commercial</option>
+              <option>Multi-Unit</option>
+              <option>Hospitality</option>
+              <option>Architecture</option>
+            </select>
+          </div>
         </div>
+        <div class="af-group"><label>Location</label><input id="g-location" placeholder="e.g. Whitefield, Bengaluru"></div>
         <div class="af-group"><label>Upload Photo</label>
-          <div class="img-drop-zone" onclick="document.getElementById('g-file').click()"><div class="idz-icon">📷</div><div class="idz-txt">Click to select a photo</div></div>
+          <div class="img-drop-zone" onclick="document.getElementById('g-file').click()">
+            <div class="idz-icon">📷</div>
+            <div class="idz-txt">Click to select a photo from your device</div>
+          </div>
           <input type="file" id="g-file" accept="image/*" style="display:none" onchange="prevGalImg(this)">
           <div id="g-prev" style="margin-top:6px"></div>
         </div>
-        <div class="af-group"><label>Caption / Location</label><input id="g-caption" placeholder="e.g. Evanston, IL · Completed 2024"></div>
-        <button class="a-submit" onclick="addGallery()">Add to Gallery →</button>
-        <hr class="adm-divider"><div class="list-hd">Gallery Items</div>
-        <div class="a-list" id="adm-gal-list"></div>
+        <div class="af-group"><label>Caption</label><input id="g-caption" placeholder="e.g. Completed 2024 · 4BHK luxury villa"></div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="a-submit" id="gal-submit-btn" onclick="saveGalleryItem()">Add to Gallery →</button>
+          <button id="gal-cancel-edit-btn" style="display:none;background:none;border:1px solid #ccc;padding:11px 18px;cursor:pointer;font-size:13px" onclick="cancelGalleryEdit()">Cancel Edit</button>
+        </div>
+        <hr class="adm-divider">
+        <div class="list-hd">Gallery Items</div>
+        <div class="adm-gallery-grid" id="adm-gal-list"></div>
       </div>
 
-      <!-- BLOG FORM -->
-      <div id="form-blog" style="display:none">
-        <div class="a-stitle">Publish New Blog Post</div>
-        <div class="a-ssub">Upload multiple images — first is the cover, the rest appear in a gallery slider inside the article.</div>
-        <div id="bl-ok" class="a-ok">✓ Blog post published and live!</div>
-        <div class="af-group"><label>Post Title</label><input id="b-title" placeholder="e.g. How We Approach Luxury Renovations"></div>
-        <div class="af-row">
-          <div class="af-group"><label>Category</label><select id="b-cat"><option>Industry News</option><option>Project Stories</option><option>Tips &amp; Guides</option><option>Company Updates</option><option>Design Trends</option></select></div>
-          <div class="af-group"><label>Author Name</label><input id="b-author" placeholder="e.g. Robert Stone"></div>
-        </div>
-        <!-- MULTI IMAGE UPLOADER -->
-        <div class="af-group">
-          <label>Images <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#aaa;font-size:11px">(first = cover · drag to reorder · click × to remove)</span></label>
-          <div class="img-drop-zone" id="b-drop" onclick="document.getElementById('b-imgs').click()">
-            <div class="idz-icon">🖼️</div>
-            <div class="idz-txt">Click to upload one or more images</div>
-          </div>
-          <input type="file" id="b-imgs" accept="image/*" multiple style="display:none" onchange="handleBlogImgs(this)">
-          <div class="img-preview-grid" id="b-img-previews"></div>
-        </div>
-        <div class="af-group"><label>Short Excerpt</label><textarea id="b-excerpt" style="min-height:70px" placeholder="1–2 sentence summary shown on the blog listing..."></textarea></div>
-        <div class="af-group"><label>Full Article Body</label><textarea id="b-body" style="min-height:180px" placeholder="Write the full article. Separate paragraphs with a blank line."></textarea></div>
-        <button class="a-submit" onclick="addPost()">Publish Post →</button>
-        <hr class="adm-divider"><div class="list-hd">Published Posts</div>
-        <div class="a-list" id="adm-bl-list"></div>
-      </div>
+      <!-- COMPANY PERFORMANCE FORM (injected by companyperformance.js) -->
+      <div id="form-performance" style="display:none"></div>
 
     </div>
   </div>
 </div>
 
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBLK2UbEdzPa7rpiGf6A0AJO6S7jvUqDxk",
-    authDomain: "vimana-construction-e6a4a.firebaseapp.com",
-    projectId: "vimana-construction-e6a4a",
-    storageBucket: "vimana-construction-e6a4a.firebasestorage.app",
-    messagingSenderId: "1058890052113",
-    appId: "1:1058890052113:web:8e02824eee430b52d2f7b0"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
 <script>
-  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-  formspree('initForm', { 
-    formElement: '#quote-form', 
-    formId: 'xeennvge',
-    onSuccess: function() {
-      // Hide the form on success to show only the message
-      document.getElementById('quote-form').style.display = 'none';
-    }
-  });
-</script>
+// ══════════════════════════════════════════════════════════════════════════════
+//  INLINE SCRIPTS — only UI logic, navigation, gallery render, and auth flow.
+//  Firebase calls are handled by the ES-module scripts above.
+// ══════════════════════════════════════════════════════════════════════════════
 
-<script>
+// ── Global state ───────────────────────────────────────────────────────────
+window.reviews         = window.reviews || [];
+window._isAdminLoggedIn = false;
+window.rvStars         = 5;
 
-  // 1. Initialize Global State
-window.reviews = [];
-
-// ══════════════════════════════════════════════════════════════
-//  SECURITY — Only SHA-256 hashes live in this file.
-//  Plain-text credentials are NEVER stored here.
-//  Hashes were generated offline:
-//    sha256('raswanthbalu') = d63e9b023ff69c351e33a22a5ddd473dd071a89f8b71162581555205aeef4854
-//    sha256('ulabraswanth') = f996dbabdac5b948927b501c4b77c5a637b74d565bdb446d98cd57fad49703b9
-//  Even with full source-code access, these hashes cannot be
-//  reversed to recover the original credentials.
-// ══════════════════════════════════════════════════════════════
-const AUTH = Object.freeze({
+// ── Admin credential hashes (read from config.js) ─────────────────────────
+const AUTH = (window.APP_CONFIG && window.APP_CONFIG.adminHash) || {
   u: 'd63e9b023ff69c351e33a22a5ddd473dd071a89f8b71162581555205aeef4854',
   p: 'f996dbabdac5b948927b501c4b77c5a637b74d565bdb446d98cd57fad49703b9'
-});
+};
 
 async function sha256(str) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-// Brute-force protection
+// Lockout state (also used by login.js module via window.*)
 let failCount = 0, lockUntil = 0, lockInterval = null;
 
-// ── DATA ──
-let rvStars = 5;
-let blogImgs = []; // [{dataURL, name}]
+// ── Footer year ────────────────────────────────────────────────────────────
+document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-// let reviews = [
-//   {id:1, name:'Emily Davis', role:'Interior Architect', stars:5, img:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80', text:'Their attention to detail and willingness to collaborate made the design-to-build process seamless. A rare contractor that truly respects the design intent and delivers on every promise.'},
-//   {id:2, name:'Michael Chen', role:'Property Developer', stars:5, img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=80', text:'We have partnered with BuildCraft on four commercial projects and they consistently deliver superior craftsmanship. They are our exclusive build partner going forward — no question.'},
-//   {id:3, name:'Sarah Williams', role:'Business Owner', stars:5, img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80', text:'They completed our office build-out on time and within budget. Communication throughout was genuinely outstanding. I never once had to chase an update — pure professionalism.'},
-//   {id:4, name:'Robert Johnson', role:'Homeowner', stars:5, img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80', text:'From consultation to final walkthrough, the team was professional and attentive. Our kitchen renovation exceeded every expectation and was delivered two weeks ahead of schedule.'},
-//   {id:5, name:'Anita Patel', role:'Retail Developer', stars:5, img:'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&q=80', text:'BuildCraft transformed our retail space in record time. The quality of finish is exceptional and the project manager kept us updated at every single stage. Highly recommend.'},
-// ];
+// ── NAVIGATION ────────────────────────────────────────────────────────────
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-let gallery = [
-  {id:1, name:'Skyline Penthouse', tag:'Luxury Residential', caption:'Chicago, IL · 12 Weeks', img:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80'},
-  {id:2, name:'Heritage Manor', tag:'Renovation', caption:'Lake Forest, IL', img:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80'},
-  {id:3, name:'Tech Hub Fit-out', tag:'Commercial', caption:'LEED Platinum · River North', img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80'},
-  {id:4, name:'Oakhill Residence', tag:'New Build', caption:'Naperville, IL', img:'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=800&q=80'},
-  {id:5, name:'Harbor Loft Complex', tag:'Multi-Unit', caption:'Evanston, IL · 48 Units', img:'https://images.unsplash.com/photo-1460317442991-0ec209397118?w=800&q=80'},
-  {id:6, name:'Grand Arch Hotel', tag:'Hospitality', caption:'Downtown Chicago', img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80'},
-  {id:7, name:'Meridian Office Park', tag:'Commercial', caption:'Schaumburg, IL', img:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'},
-  {id:8, name:'Elara Villa', tag:'Luxury Residential', caption:'Winnetka, IL', img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80'},
+// ── STATIC GALLERY DATA (homepage fallback) ───────────────────────────────
+let galleryData = [
+  {id:'g1', name:'Skyline Penthouse',   tag:'Luxury Residential', caption:'Bengaluru, KA · 12 Weeks', img:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80'},
+  {id:'g2', name:'Heritage Manor',      tag:'Renovation',         caption:'Koramangala, Bengaluru',   img:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80'},
+  {id:'g3', name:'Tech Hub Fit-out',    tag:'Commercial',         caption:'Whitefield, Bengaluru',    img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80'},
+  {id:'g4', name:'Oakhill Residence',   tag:'New Build',          caption:'Electronic City',          img:'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=800&q=80'},
+  {id:'g5', name:'Harbor Complex',      tag:'Multi-Unit',         caption:'HSR Layout · 48 Units',    img:'https://images.unsplash.com/photo-1460317442991-0ec209397118?w=800&q=80'},
+  {id:'g6', name:'Grand Arch Hotel',    tag:'Hospitality',        caption:'MG Road, Bengaluru',       img:'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80'},
+  {id:'g7', name:'Meridian Office Park',tag:'Commercial',         caption:'Sarjapur Road',            img:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80'},
+  {id:'g8', name:'Elara Villa',         tag:'Luxury Residential', caption:'Indiranagar, Bengaluru',   img:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80'},
 ];
 
-let posts = [
-  {id:3, title:'Sustainable Building Trends Defining 2025', cat:'Design Trends', author:'Marcus Well', date:'March 30, 2025', ts:1743292800,
-   imgs:['https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=800&q=80','https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80'],
-   excerpt:'From mass timber to passive house design — the materials and methods shaping the future of construction right now.',
-   body:'Construction is undergoing its most significant transformation in a generation. Driven by tightening energy codes, client demand for lower operating costs, and a genuine shift in values, sustainable building has moved from niche premium to mainstream expectation.\n\nMass Timber is Having Its Moment. Cross-laminated timber (CLT) and glulam structures have matured from architectural novelty to serious structural systems. Mass timber sequesters carbon, delivers extraordinary structural performance, and creates interior environments clients consistently describe as warmer than steel and concrete.\n\nPassive House is Becoming the New Standard. The Passive House standard achieves 70–90% reductions in heating and cooling energy through airtight envelopes, heat recovery ventilation, and optimised solar orientation. The upfront cost premium has narrowed significantly as more builders have adopted the methodology.\n\nEmbodied Carbon is Now Part of the Conversation. In 2025, our clients are increasingly asking about embodied carbon — emissions associated with manufacturing, transporting, and installing materials. This has meaningfully shifted specification decisions across our projects.\n\nSmart Building Integration. From automated shading and HVAC to real-time energy monitoring, smart building systems are no longer limited to corporate campuses. We are specifying integrated systems in residential projects at price points that would have seemed impossible five years ago.'},
-
-  {id:2, title:'Behind the Build: Skyline Penthouse in 12 Weeks', cat:'Project Stories', author:'Elena Rostova', date:'April 18, 2025', ts:1745020800,
-   imgs:['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80','https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80','https://images.unsplash.com/photo-1460317442991-0ec209397118?w=800&q=80'],
-   excerpt:'A behind-the-scenes look at how our team delivered a complex 4,000 sq ft penthouse renovation with zero delays.',
-   body:'When our clients walked us through their raw 4,000 sq ft penthouse on the 42nd floor of a Streeterville high-rise, they had a clear vision: dark timbers, polished concrete, bespoke steel detailing, and panoramic glass walls making the lake feel like part of the room.\n\nThey also had a hard constraint: 12 weeks. A deadline driven by a family relocation from London.\n\nThe Challenge of High-Rise Logistics. Working at elevation in an occupied residential tower introduces unique constraints. All materials must travel in passenger elevators during off-peak hours. Noise work is restricted to specific windows. Dust and debris management must be military-precise. Our site team mapped every delivery, trade, and inspection window before a single tool was unpacked.\n\nConcurrent Trades, Zero Conflicts. Our 12-week delivery came from running structural, mechanical, and finish trades concurrently rather than sequentially — a method requiring tight coordination but dramatically compressing timelines. Our project manager held daily 7am stand-ups with every trade lead.\n\nThe Result. Keys were handed over on day 84 — three days ahead of schedule. The clients moved in as planned, and the penthouse was subsequently featured in Architectural Digest\'s Midwest edition.'},
-
-  {id:1, title:'5 Things to Know Before Your Commercial Build', cat:'Tips & Guides', author:'Robert Stone', date:'May 2, 2025', ts:1746057600,
-   imgs:['https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80','https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=800&q=80'],
-   excerpt:'Planning a commercial construction project? Five critical things every business owner must know before breaking ground.',
-   body:'Planning a commercial construction project is one of the most significant investments a business can make. Done right, it creates a space that elevates your brand and delivers ROI for decades. Done wrong, it drains budgets and delays operations.\n\n1. Budget for the unexpected — always. Even the most meticulously planned project encounters unforeseen conditions. A 10–15% contingency buffer is not optional — it is essential and non-negotiable.\n\n2. Choose your contractor before you finalise your design. Too many clients finalise architectural plans only to discover the design exceeds budget. By involving your build partner early, you align design ambition with real-world costs from day one.\n\n3. Permits take longer than you think. In the Chicago metro area, commercial permits can take 6–12 weeks to process. Factor this into your timeline rigorously and work with a contractor who prepares compliant documentation the first time.\n\n4. Communication is half the project. Establish a clear communication protocol before construction begins. At BuildCraft, every project has a dedicated project manager and a weekly written update.\n\n5. Do not compromise on structure to save on finish. Structural integrity is forever; finishes can always be upgraded later. Your building\'s bones define its value for generations.'},
-];
-
-let nR=6, nG=9, nP=4;
-
-// ── SLIDERS STATE ──
-const sliders = {
-  rv: { idx: 0, perView: ()=> window.innerWidth < 900 ? 1 : 3 },
-  bl: { idx: 0, perView: ()=> window.innerWidth < 900 ? 1 : 4 }
-};
-
-// ── NAV ──
-function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
-
-// ══════════════ RENDER REVIEWS SLIDER ══════════════
-// function renderReviews(){
-//   // latest first (by id desc)
-//   const sorted = [...reviews].sort((a,b)=>b.id-a.id);
-//   const track = document.getElementById('rv-track');
-//   track.innerHTML = sorted.map(r=>`
-//     <div class="review-card">
-//       <div class="rv-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-//       <p class="rv-text">"${r.text}"</p>
-//       <div class="rv-author">
-//         <div class="rv-avatar">${r.img?`<img src="${r.img}" alt="${r.name}">`:r.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
-//         <div><div class="rv-name">${r.name}</div><div class="rv-role">${r.role}</div></div>
-//       </div>
-//     </div>`).join('');
-//   sliders.rv.total = sorted.length;
-//   sliders.rv.idx = 0;
-//   updateSlider('rv');
-// }
-// 2. Public Slider Render Function
-function renderReviews() {
-  const track = document.getElementById('rv-track');
-  if (!track) return;
-
-  const data = window.reviews || [];
-
-  track.innerHTML = data.map(r => `
-    <div class="review-card">
-      <div class="rv-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
-      <p class="rv-text">"${r.text}"</p>
-      <div class="rv-author">
-        <div class="rv-avatar">
-          ${r.img ? `<img src="${r.img}" alt="${r.name}">` : `<div class="rv-initials">${r.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div>`}
-        </div>
-        <div>
-          <div class="rv-name">${r.name}</div>
-          <div class="rv-role">${r.role}</div>
-        </div>
-      </div>
-    </div>`).join('');
-
-  if (window.sliders && window.sliders.rv) {
-      sliders.rv.total = data.length;
-      sliders.rv.idx = 0;
-      updateSlider('rv');
-  }
-}
-
-// ══════════════ RENDER BLOG SLIDER ══════════════
-function renderBlogSlider(){
-  const sorted = [...posts].sort((a,b)=>b.ts-a.ts);
-  const latest4 = sorted.slice(0,4);
-  const track = document.getElementById('bl-track');
-  track.innerHTML = latest4.map(p=>`
-    <div class="blog-card" onclick="openPost(${p.id})">
-      <div class="blog-thumb"><img src="${p.imgs[0]}" alt="${p.title}" loading="lazy"></div>
-      <div class="blog-body">
-        <div class="blog-meta"><span class="blog-cat">${p.cat}</span><span class="blog-date">${p.date}</span></div>
-        <div class="blog-title">${p.title}</div>
-        <div class="blog-excerpt">${p.excerpt}</div>
-        <span class="blog-read">Read Article →</span>
-      </div>
-    </div>`).join('');
-  sliders.bl.total = latest4.length;
-  sliders.bl.idx = 0;
-  updateSlider('bl');
-}
-
-// ══════════════ SLIDER ENGINE ══════════════
-function updateSlider(key){
-  const s = sliders[key];
-  const track = document.getElementById(key+'-track');
-  const pv = s.perView();
-  const cards = track.children;
-  if(!cards.length) return;
-  const cardW = cards[0].offsetWidth + 20; // 20 = margin-right
-  const maxIdx = Math.max(0, s.total - pv);
-  s.idx = Math.max(0, Math.min(s.idx, maxIdx));
-  track.style.transform = `translateX(-${s.idx * cardW}px)`;
-  // dots
-  const dots = document.getElementById(key+'-dots');
-  dots.innerHTML = '';
-  const pages = maxIdx + 1;
-  for(let i=0;i<pages;i++){
-    const d = document.createElement('div');
-    d.className = 'sl-dot' + (key==='bl'?' dark':'') + (i===s.idx?' active':'');
-    d.onclick = ()=>{s.idx=i;updateSlider(key);};
-    dots.appendChild(d);
-  }
-}
-function slideNext(key){sliders[key].idx++;updateSlider(key);}
-function slidePrev(key){sliders[key].idx--;updateSlider(key);}
-window.addEventListener('resize',()=>{updateSlider('rv');updateSlider('bl');});
-
-// ══════════════ GALLERY RENDER ══════════════
-function renderGallery(){
-  document.getElementById('gallery-grid').innerHTML = gallery.map(g=>`
-    <div class="gal-item" onclick="openLightbox('${g.img}','${g.caption}','${g.tag}')">
-      <img src="${g.img}" alt="${g.name}" loading="lazy">
+// ── GALLERY RENDER ────────────────────────────────────────────────────────
+function renderGallery() {
+  const grid = document.getElementById('gallery-grid');
+  if (!grid) return;
+  const maxItems = (window.APP_CONFIG && window.APP_CONFIG.gallery.homepageMaxItems) || 15;
+  const shown = galleryData.slice(0, maxItems);
+  grid.innerHTML = shown.map(g => `
+    <div class="gal-item" onclick="openLightbox('${g.img}','${g.caption || g.location || ''}','${g.tag}')">
+      <img src="${g.img}" alt="${g.name}">
       <div class="gal-ov"><div class="gal-tag">${g.tag}</div><div class="gal-cap">${g.name}</div></div>
     </div>`).join('');
 }
 
-// ══════════════ BLOG PAGE (ALL) ══════════════
-function openBlogPage(){
-  const sorted = [...posts].sort((a,b)=>b.ts-a.ts);
-  document.getElementById('bp-grid').innerHTML = sorted.map(p=>`
-    <div class="blog-card" onclick="openPost(${p.id});closeBlogPage()" style="cursor:pointer">
-      <div class="blog-thumb"><img src="${p.imgs[0]}" alt="${p.title}" loading="lazy"></div>
-      <div class="blog-body">
-        <div class="blog-meta"><span class="blog-cat">${p.cat}</span><span class="blog-date">${p.date}</span></div>
-        <div class="blog-title">${p.title}</div>
-        <div class="blog-excerpt">${p.excerpt}</div>
-        <span class="blog-read">Read Article →</span>
-      </div>
-    </div>`).join('');
-  document.getElementById('blog-page').classList.add('open');
-  document.body.style.overflow='hidden';
+// ── LIGHTBOX ───────────────────────────────────────────────────────────────
+function openLightbox(img, cap, tag) {
+  const lbImg = document.getElementById('lb-img');
+  const lbCap = document.getElementById('lb-cap');
+  const lbTag = document.getElementById('lb-tag');
+  const lb    = document.getElementById('lightbox');
+  if (lbImg) lbImg.src             = img;
+  if (lbCap) lbCap.textContent     = cap;
+  if (lbTag) lbTag.textContent     = tag;
+  if (lb)  { lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
 }
-function closeBlogPage(){document.getElementById('blog-page').classList.remove('open');document.body.style.overflow='';}
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (lb) lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+const lb = document.getElementById('lightbox');
+if (lb) lb.addEventListener('click', e => { if (e.target.id === 'lightbox') closeLightbox(); });
 
-// ══════════════ BLOG POST MODAL + IMAGE GALLERY ══════════════
-let bmSlideIdx = 0, bmImgs = [];
+// ── REVIEW SLIDER NAV (for global slidePrev/slideNext) ────────────────────
+window.slideNext = window.slideNext || function() {};
+window.slidePrev = window.slidePrev || function() {};
 
-function openPost(id){
-  const p = posts.find(x=>x.id===id); if(!p) return;
-  bmImgs = p.imgs || [];
-  bmSlideIdx = 0;
-  document.getElementById('bm-hero').src = bmImgs[0]||'';
-  document.getElementById('bm-cat').textContent = p.cat;
-  document.getElementById('bm-title').textContent = p.title;
-  document.getElementById('bm-meta').textContent = `By ${p.author} · ${p.date}`;
+// ── STAR RATING ────────────────────────────────────────────────────────────
+function setStars(n) {
+  window.rvStars = n;
+  document.querySelectorAll('#star-sel span').forEach((s, i) => s.classList.toggle('on', i < n));
+}
 
-  // Build body with inline gallery
-  const paras = p.body.split('\n\n');
-  let html = '';
-  paras.forEach((t,i)=>{
-    html += `<p>${t.replace(/\n/g,'<br>')}</p>`;
-  });
+// ── SHOW OK NOTIFICATION ───────────────────────────────────────────────────
+function showOK(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+window.showOK = showOK;
 
-  // Image gallery (if more than 1 image)
-  if(bmImgs.length > 1){
-    html += buildBmGallery(bmImgs);
+// ══════════════ LOGIN (Hash-based admin auth) ══════════════════════════════
+function openLogin() {
+  const locked = Date.now() < lockUntil;
+  const errEl  = document.getElementById('login-err');
+  const lockEl = document.getElementById('login-lock');
+  const userEl = document.getElementById('login-user');
+  const passEl = document.getElementById('login-pass');
+  if (errEl)  errEl.style.display  = 'none';
+  if (lockEl) lockEl.style.display = locked ? 'block' : 'none';
+  if (!locked) {
+    if (userEl) userEl.value = '';
+    if (passEl) passEl.value = '';
   }
-
-  document.getElementById('bm-content').innerHTML = html;
-  document.getElementById('blog-modal').classList.add('open');
-  document.body.style.overflow='hidden';
-  // init gallery state
-  setTimeout(()=>bmGoTo(0),50);
+  const screen = document.getElementById('login-screen');
+  if (screen) { screen.classList.add('open'); document.body.style.overflow = 'hidden'; }
 }
+window.openLogin = openLogin;
 
-function buildBmGallery(imgs){
-  const slides = imgs.map((src,i)=>`
-    <div class="bm-img-slide">
-      <img src="${src}" alt="Photo ${i+1}" onclick="openLightbox('${src}','Image ${i+1} of ${imgs.length}','')">
-      <button class="img-expand" onclick="openLightbox('${src}','Image ${i+1} of ${imgs.length}','')" title="Fullscreen">⛶</button>
-    </div>`).join('');
-
-  const thumbs = imgs.map((src,i)=>`
-    <img class="bm-img-thumb${i===0?' active':''}" src="${src}" alt="thumb ${i+1}" onclick="bmGoTo(${i})" id="bm-thumb-${i}">`).join('');
-
-  return `
-  <div class="bm-img-gallery" style="margin:24px 0">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">📸 Photo Gallery (${imgs.length} images)</div>
-    <div style="overflow:hidden;position:relative">
-      <div id="bm-slide-track" style="display:flex;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform">
-        ${slides}
-      </div>
-    </div>
-    <div class="bm-img-nav" style="margin-top:10px">
-      <div class="sl-dots" id="bm-gal-dots" style="margin-right:0"></div>
-      <div style="display:flex;gap:6px">
-        <button class="sl-arrow dark" style="width:36px;height:36px;font-size:14px" onclick="bmGoTo(bmSlideIdx-1)">&#8592;</button>
-        <span class="bm-img-counter" id="bm-slide-counter" style="padding:0 8px;line-height:36px;color:#aaa"></span>
-        <button class="sl-arrow dark" style="width:36px;height:36px;font-size:14px" onclick="bmGoTo(bmSlideIdx+1)">&#8594;</button>
-      </div>
-    </div>
-    <div class="bm-img-thumbs">${thumbs}</div>
-  </div>`;
+function closeLogin() {
+  const screen = document.getElementById('login-screen');
+  if (screen) screen.classList.remove('open');
+  document.body.style.overflow = '';
 }
+window.closeLogin = closeLogin;
 
-function bmGoTo(idx){
-  if(!bmImgs.length) return;
-  bmSlideIdx = Math.max(0, Math.min(idx, bmImgs.length-1));
-  const track = document.getElementById('bm-slide-track');
-  if(!track) return;
-  const w = track.parentElement.offsetWidth;
-  track.style.transform = `translateX(-${bmSlideIdx * w}px)`;
-  // update counter
-  const counter = document.getElementById('bm-slide-counter');
-  if(counter) counter.textContent = `${bmSlideIdx+1} / ${bmImgs.length}`;
-  // update thumbs
-  bmImgs.forEach((_,i)=>{
-    const t = document.getElementById('bm-thumb-'+i);
-    if(t) t.className='bm-img-thumb'+(i===bmSlideIdx?' active':'');
+// async function doLogin() {
+//   console.log('Attempting login in html do login method...'); // Debug log
+//   const now    = Date.now();
+//   const errEl  = document.getElementById('login-err');
+//   const lockEl = document.getElementById('login-lock');
+//   const btn    = document.getElementById('login-btn');
+
+//   if (now < lockUntil) {
+//     if (lockEl) lockEl.style.display = 'block';
+//     return;
+//   }
+//   console.log('Collecting credentials line 848...'); // Debug log
+
+//   const u = document.getElementById('login-user') ? document.getElementById('login-user').value.trim() : '';
+//   const p = document.getElementById('login-pass') ? document.getElementById('login-pass').value : '';
+//   console.log('Credentials collected:', { u: u ? '[REDACTED]' : '(empty)', p: p ? '[REDACTED]' : '(empty)' }); // Debug log
+
+//   if (!u || !p) {
+//     if (errEl) { errEl.textContent = 'Please enter both email and password.'; errEl.style.display = 'block'; }
+//     return;
+//   }
+//   console.log('Starting credential hashing...'); // Debug log
+
+//   if (btn) { btn.textContent = 'Verifying…'; btn.disabled = true; }
+
+//   const [uH, pH] = await Promise.all([sha256(u), sha256(p)]);
+
+//   if (btn) { btn.textContent = 'Sign In →'; btn.disabled = false; }
+
+//   const match = (uH === AUTH.u && pH === AUTH.p);
+// console.log('Hashing complete. Match result:', match); // Debug log
+//   if (match) {
+//     console.log('Login successful. Setting admin state...'); // Debug log
+//      alert('Login successful! from html'); // Optional: replace with nicer UI feedback
+//     failCount = 0;
+//     window._isAdminLoggedIn = true;
+//     if (errEl)  errEl.style.display  = 'none';
+//     if (lockEl) lockEl.style.display = 'none';
+//     closeLogin();
+//     showActions();
+//   } else {
+//     console.log('Login failed. Incrementing fail count...'); // Debug log
+//      alert('Login failed in html: ' + (err.message || 'Unknown error')); // Optional: replace with nicer UI feedback
+//     failCount++;
+//     const passEl = document.getElementById('login-pass');
+//     if (passEl) passEl.value = '';
+
+//     if (failCount >= 5) {
+//       lockUntil = Date.now() + 60000;
+//       if (errEl)  errEl.style.display  = 'none';
+//       if (lockEl) lockEl.style.display = 'block';
+//       if (lockInterval) clearInterval(lockInterval);
+//       lockInterval = setInterval(() => {
+//         const rem     = Math.ceil((lockUntil - Date.now()) / 1000);
+//         const timerEl = document.getElementById('lock-timer');
+//         if (timerEl) timerEl.textContent = rem > 0 ? rem : 0;
+//         if (Date.now() >= lockUntil) {
+//           clearInterval(lockInterval);
+//           if (lockEl) lockEl.style.display = 'none';
+//           failCount = 0;
+//         }
+//       }, 1000);
+//     } else {
+//       const left = 5 - failCount;
+//       const attEl = document.getElementById('attempts-left');
+//       if (attEl) attEl.textContent = `${left} attempt${left !== 1 ? 's' : ''} remaining before lockout.`;
+//       if (errEl) errEl.style.display = 'block';
+//     }
+//   }
+// }
+
+// window.doLogin = doLogin;
+
+// Bind login button + Enter key
+document.addEventListener('DOMContentLoaded', () => {
+  const loginBtn  = document.getElementById('login-btn');
+  const passInput = document.getElementById('login-pass');
+  if (loginBtn)  loginBtn.addEventListener('click', e => { e.preventDefault(); doLogin(); });
+  if (passInput) passInput.addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+});
+
+// ══════════════ ACTION / ADMIN ═════════════════════════════════════════════
+function showActions() {
+  console.log('Attempting to show action screen... : ', window._isAdminLoggedIn); // Debug log
+  if (!window._isAdminLoggedIn) return; // safety guard
+ console.log('Admin is logged in, showing action screen.'); // Debug log
+  const screen = document.getElementById('action-screen');
+  if (screen) { screen.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+window.showActions = showActions;
+
+function closeActionScreen() {
+  const screen = document.getElementById('action-screen');
+  if (screen) screen.classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.closeActionScreen = closeActionScreen;
+
+function openAdmin(section) {
+  if (!window._isAdminLoggedIn) return; // security guard
+  closeActionScreen();
+  ['reviews', 'gallery', 'performance'].forEach(s => {
+    const f = document.getElementById('form-' + s);
+    if (f) f.style.display = 'none';
   });
-  // update dots
-  const dots = document.getElementById('bm-gal-dots');
-  if(dots){
-    dots.innerHTML='';
-    bmImgs.forEach((_,i)=>{
-      const d = document.createElement('div');
-      d.className='sl-dot dark'+(i===bmSlideIdx?' active':'');
-      d.onclick=()=>bmGoTo(i);
-      dots.appendChild(d);
-    });
-  }
+  const formEl = document.getElementById('form-' + section);
+  if (formEl) formEl.style.display = 'block';
+  const titles = { reviews: '⭐ Manage Reviews', gallery: '🖼 Manage Gallery', performance: '📊 Company Performance' };
+  const titleEl = document.getElementById('adm-title');
+  if (titleEl) titleEl.textContent = titles[section] || 'Site Manager';
+  const overlay = document.getElementById('admin-overlay');
+  if (overlay) { overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
 }
+window.openAdmin = openAdmin;
 
-function closeBlogModal(){
-  document.getElementById('blog-modal').classList.remove('open');
-  document.body.style.overflow='';
-  bmImgs=[];bmSlideIdx=0;
+function closeAdmin() {
+  const overlay = document.getElementById('admin-overlay');
+  if (overlay) overlay.classList.remove('open');
+  document.body.style.overflow = '';
 }
+window.closeAdmin = closeAdmin;
 
-// ══════════════ GALLERY LIGHTBOX ══════════════
-function openLightbox(img,cap,tag){
-  document.getElementById('lb-img').src=img;
-  document.getElementById('lb-cap').textContent=cap;
-  document.getElementById('lb-tag').textContent=tag;
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow='hidden';
+function backToActions() {
+  closeAdmin();
+  showActions();
 }
-function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
-document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox();});
+window.backToActions = backToActions;
 
-// ══════════════ ADD CONTENT ══════════════
-function addReview(){
-  const name=document.getElementById('r-name').value.trim();
-  const role=document.getElementById('r-role').value.trim();
-  const text=document.getElementById('r-text').value.trim();
-  if(!name||!text){alert('Please enter client name and review text.');return;}
-  reviews.unshift({id:nR++,name,role:role||'Client',stars:rvStars,img:'',text});
-  document.getElementById('r-name').value='';document.getElementById('r-role').value='';document.getElementById('r-text').value='';
-  setStars(5); showOK('rv-ok'); renderReviews(); renderAdminLists();
-}
-function deleteReview(id){if(!confirm('Delete this review?'))return;reviews=reviews.filter(r=>r.id!==id);renderReviews();renderAdminLists();}
-function editReview(id){if(!confirm('Edit this review?'))return;reviews=reviews.filter(r=>r.id!==id);renderReviews();renderAdminLists();}
-let gPrevURL='';
-function prevGalImg(input){
-  const f=input.files[0];if(!f)return;
-  const r=new FileReader();r.onload=e=>{gPrevURL=e.target.result;document.getElementById('g-prev').innerHTML=`<div style="height:80px;overflow:hidden;border:2px solid var(--gold)"><img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover"></div>`;};
+// ══════════════ GALLERY ADMIN (Firestore + FileReader) ═════════════════════
+let gPrevURL = '';
+let gEditingId = null;
+
+function prevGalImg(input) {
+  const f = input.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    gPrevURL = e.target.result;
+    const prev = document.getElementById('g-prev');
+    if (prev) prev.innerHTML = `<div style="height:100px;overflow:hidden;border:2px solid var(--gold)"><img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover"></div>`;
+  };
   r.readAsDataURL(f);
 }
-function addGallery(){
-  const name=document.getElementById('g-name').value.trim();
-  const tag=document.getElementById('g-tag').value;
-  const cap=document.getElementById('g-caption').value.trim();
-  if(!name){alert('Please enter a project name.');return;}
-  const img=gPrevURL||'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80';
-  gallery.unshift({id:nG++,name,tag,caption:cap||tag,img});
-  document.getElementById('g-name').value='';document.getElementById('g-caption').value='';
-  document.getElementById('g-file').value='';document.getElementById('g-prev').innerHTML='';gPrevURL='';
-  showOK('gal-ok');renderGallery();renderAdminLists();
+window.prevGalImg = prevGalImg;
+
+async function saveGalleryItem() {
+  if (!window._isAdminLoggedIn) { alert('Please log in as admin first.'); return; }
+  const name     = document.getElementById('g-name')     ? document.getElementById('g-name').value.trim()     : '';
+  const tag      = document.getElementById('g-tag')      ? document.getElementById('g-tag').value             : '';
+  const location = document.getElementById('g-location') ? document.getElementById('g-location').value.trim() : '';
+  const caption  = document.getElementById('g-caption')  ? document.getElementById('g-caption').value.trim()  : '';
+
+  if (!name) { alert('Please enter a project name.'); return; }
+
+  const img = gPrevURL || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80';
+
+  if (gEditingId !== null) {
+    // Update existing item
+    const idx = galleryData.findIndex(g => g.id === gEditingId);
+    if (idx !== -1) {
+      galleryData[idx] = { ...galleryData[idx], name, tag, location, caption: caption || location || tag, img };
+    }
+    gEditingId = null;
+    const btn = document.getElementById('gal-submit-btn');
+    const cancelBtn = document.getElementById('gal-cancel-edit-btn');
+    if (btn) btn.textContent = 'Add to Gallery →';
+    if (cancelBtn) cancelBtn.style.display = 'none';
+  } else {
+    // Add new
+    const newItem = { id: 'g' + Date.now(), name, tag, location, caption: caption || location || tag, img };
+    galleryData.unshift(newItem);
+  }
+
+  // Clear form
+  ['g-name', 'g-caption', 'g-location'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const fileEl = document.getElementById('g-file');
+  const prevEl = document.getElementById('g-prev');
+  if (fileEl) fileEl.value = '';
+  if (prevEl) prevEl.innerHTML = '';
+  gPrevURL = '';
+
+  showOK('gal-ok');
+  renderGallery();
+  renderAdminGallery();
 }
-function delGallery(id){if(!confirm('Remove from gallery?'))return;gallery=gallery.filter(g=>g.id!==id);renderGallery();renderAdminLists();}
+window.saveGalleryItem = saveGalleryItem;
 
-// Blog multi-image
-function handleBlogImgs(input){
-  const files=Array.from(input.files);if(!files.length)return;
-  const container=document.getElementById('b-img-previews');
-  let loaded=0;
-  files.forEach(f=>{
-    const r=new FileReader();
-    r.onload=e=>{
-      blogImgs.push({dataURL:e.target.result,name:f.name});
-      loaded++;
-      if(loaded===files.length) renderBlogImgPreviews();
-    };r.readAsDataURL(f);
-  });
-  // reset file input so same file can be added again
-  input.value='';
+function editGalleryItem(id) {
+  if (!window._isAdminLoggedIn) return;
+  const item = galleryData.find(g => g.id === id);
+  if (!item) return;
+  gEditingId = id;
+
+  const setVal = (elId, val) => { const el = document.getElementById(elId); if (el) el.value = val || ''; };
+  setVal('g-name',     item.name);
+  setVal('g-location', item.location || '');
+  setVal('g-caption',  item.caption  || '');
+
+  const tagEl = document.getElementById('g-tag');
+  if (tagEl) tagEl.value = item.tag;
+
+  gPrevURL = item.img;
+  const prev = document.getElementById('g-prev');
+  if (prev) prev.innerHTML = `<div style="height:100px;overflow:hidden;border:2px solid var(--gold)"><img src="${item.img}" style="width:100%;height:100%;object-fit:cover"></div>`;
+
+  const btn = document.getElementById('gal-submit-btn');
+  const cancelBtn = document.getElementById('gal-cancel-edit-btn');
+  if (btn) btn.textContent = 'Update Gallery Item ✓';
+  if (cancelBtn) cancelBtn.style.display = 'inline-block';
+
+  const formEl = document.getElementById('form-gallery');
+  if (formEl) formEl.scrollIntoView({ behavior: 'smooth' });
 }
-function renderBlogImgPreviews(){
-  const c=document.getElementById('b-img-previews');
-  c.innerHTML=blogImgs.map((img,i)=>`
-    <div class="img-prev-wrap${i===0?' is-cover':''}">
-      <img src="${img.dataURL}" alt="${img.name}">
-      <div class="img-prev-badge">${i===0?'Cover':`+${i}`}</div>
-      <button class="img-prev-del" onclick="removeBlogImg(${i})">×</button>
-    </div>`).join('');
-  const dz=document.getElementById('b-drop');
-  dz.innerHTML=`<div class="idz-icon">🖼️</div><div class="idz-txt">${blogImgs.length} image${blogImgs.length!==1?'s':''} selected — <span style="color:var(--gold)">click to add more</span></div>`;
+window.editGalleryItem = editGalleryItem;
+
+function deleteGalleryItem(id) {
+  if (!window._isAdminLoggedIn) return;
+  if (!confirm('Remove this item from the gallery?')) return;
+  galleryData = galleryData.filter(g => g.id !== id);
+  renderGallery();
+  renderAdminGallery();
 }
-function removeBlogImg(i){blogImgs.splice(i,1);renderBlogImgPreviews();}
+window.deleteGalleryItem = deleteGalleryItem;
 
-function addPost(){
-  const title=document.getElementById('b-title').value.trim();
-  const cat=document.getElementById('b-cat').value;
-  const author=document.getElementById('b-author').value.trim();
-  const excerpt=document.getElementById('b-excerpt').value.trim();
-  const body=document.getElementById('b-body').value.trim();
-  if(!title||!excerpt){alert('Please fill in title and excerpt.');return;}
-  const now=new Date();
-  const imgs=blogImgs.length?blogImgs.map(x=>x.dataURL):['https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80'];
-  posts.unshift({id:nP++,title,cat,author:author||'BuildCraft Team',
-    date:`${now.toLocaleString('default',{month:'long'})} ${now.getDate()}, ${now.getFullYear()}`,
-    ts:now.getTime(),excerpt,body:body||excerpt,imgs});
-  ['b-title','b-author','b-excerpt','b-body'].forEach(id=>document.getElementById(id).value='');
-  blogImgs=[];
-  document.getElementById('b-img-previews').innerHTML='';
-  document.getElementById('b-drop').innerHTML='<div class="idz-icon">🖼️</div><div class="idz-txt">Click to upload one or more images</div>';
-  showOK('bl-ok');renderBlogSlider();renderAdminLists();
+function cancelGalleryEdit() {
+  gEditingId = null; gPrevURL = '';
+  ['g-name', 'g-caption', 'g-location'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const prev = document.getElementById('g-prev');
+  if (prev) prev.innerHTML = '';
+  const btn = document.getElementById('gal-submit-btn');
+  const cancelBtn = document.getElementById('gal-cancel-edit-btn');
+  if (btn) btn.textContent = 'Add to Gallery →';
+  if (cancelBtn) cancelBtn.style.display = 'none';
 }
-function delPost(id){if(!confirm('Delete this post?'))return;posts=posts.filter(p=>p.id!==id);renderBlogSlider();renderAdminLists();}
+window.cancelGalleryEdit = cancelGalleryEdit;
 
-function showOK(id){const el=document.getElementById(id);el.style.display='block';setTimeout(()=>el.style.display='none',3500);}
-
-// ── STARS ──
-function setStars(n){rvStars=n;document.querySelectorAll('#star-sel span').forEach((s,i)=>s.classList.toggle('on',i<n));}
-
-// ══════════════ SECURE LOGIN ══════════════
-function openLogin(){
-  const locked=Date.now()<lockUntil;
-  document.getElementById('login-err').style.display='none';
-  document.getElementById('login-lock').style.display=locked?'block':'none';
-  if(!locked){document.getElementById('login-user').value='';document.getElementById('login-pass').value='';}
-  document.getElementById('login-screen').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeLogin(){document.getElementById('login-screen').classList.remove('open');document.body.style.overflow='';}
-
-async function doLogin(){
-  const now=Date.now();
-  const errEl=document.getElementById('login-err');
-  const lockEl=document.getElementById('login-lock');
-  const btn=document.getElementById('login-btn');
-  // Lockout
-  if(now<lockUntil){
-    lockEl.style.display='block';
+function renderAdminGallery() {
+  const list = document.getElementById('adm-gal-list');
+  if (!list) return;
+  if (!galleryData.length) {
+    list.innerHTML = '<p style="color:#bbb;font-size:13px">No gallery items yet.</p>';
     return;
   }
-  const u=document.getElementById('login-user').value.trim();
-  const p=document.getElementById('login-pass').value;
-  if(!u||!p){errEl.textContent='Please enter both username and password.';errEl.style.display='block';return;}
-  btn.textContent='Verifying…';btn.disabled=true;
-  const [uH,pH]=await Promise.all([sha256(u),sha256(p)]);
-  btn.textContent='Sign In →';btn.disabled=false;
-
-  // Constant-length comparison to avoid timing attacks on string equality
-  const match = uH===AUTH.u && pH===AUTH.p;
-
-  if(match){
-    failCount=0;
-    errEl.style.display='none';lockEl.style.display='none';
-    closeLogin();showActions();
-  } else {
-    failCount++;
-    document.getElementById('login-pass').value='';
-    if(failCount>=5){
-      lockUntil=Date.now()+60000;
-      errEl.style.display='none';
-      lockEl.style.display='block';
-      if(lockInterval)clearInterval(lockInterval);
-      lockInterval=setInterval(()=>{
-        const rem=Math.ceil((lockUntil-Date.now())/1000);
-        document.getElementById('lock-timer').textContent=rem>0?rem:0;
-        if(Date.now()>=lockUntil){clearInterval(lockInterval);lockEl.style.display='none';failCount=0;}
-      },1000);
-    } else {
-      const left=5-failCount;
-      document.getElementById('attempts-left').textContent=`${left} attempt${left!==1?'s':''} remaining before lockout.`;
-      errEl.style.display='block';
-    }
-  }
-}
-
-document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-
-// ── ACTION / ADMIN ──
-function showActions(){document.getElementById('action-screen').classList.add('open');document.body.style.overflow='hidden';}
-function closeActionScreen(){document.getElementById('action-screen').classList.remove('open');document.body.style.overflow='';}
-
-function openAdmin(section){
-  closeActionScreen();
-  ['reviews','gallery','blog'].forEach(s=>document.getElementById('form-'+s).style.display='none');
-  document.getElementById('form-'+section).style.display='block';
-  document.getElementById('adm-title').textContent={reviews:'⭐ Manage Reviews',gallery:'🖼 Manage Gallery',blog:'📝 Manage Blog'}[section];
-  renderAdminLists();
-  document.getElementById('admin-overlay').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');document.body.style.overflow='';}
-function backToActions(){closeAdmin();showActions();}
-
-function renderAdminLists(){
-  const sorted_rv=[...reviews].sort((a,b)=>b.id-a.id);
-  document.getElementById('adm-rv-list').innerHTML=sorted_rv.map(r=>`
-    <div class="a-item">
-      <div><div class="a-item-t">${r.name} — ${'★'.repeat(r.stars)}</div><div class="a-item-s">${r.role} · "${r.text.slice(0,60)}..."</div></div>
-      <div>
-        <button class="btn-edit" onclick="editReview(${r.id})">Edit</button>
-      <button class="btn-del" onclick="deleteReview(${r.id})">Delete</button>
-      </div>
-    </div>`).join('')||'<p style="color:#bbb;font-size:13px">No reviews yet.</p>';
-
-  document.getElementById('adm-gal-list').innerHTML=gallery.map(g=>`
-    <div class="a-item">
-      <div><div class="a-item-t">${g.name}</div><div class="a-item-s">${g.tag} · ${g.caption}</div></div>
-      <button class="btn-del" onclick="delGallery(${g.id})">Delete</button>
-    </div>`).join('');
-
-  const sorted_bl=[...posts].sort((a,b)=>b.ts-a.ts);
-  document.getElementById('adm-bl-list').innerHTML=sorted_bl.map(p=>`
-    <div class="a-item">
-      <div><div class="a-item-t">${p.title}</div><div class="a-item-s">${p.cat} · ${p.author} · ${p.date}</div></div>
-      <button class="btn-del" onclick="delPost(${p.id})">Delete</button>
-    </div>`).join('')||'<p style="color:#bbb;font-size:13px">No posts yet.</p>';
-}
-// --- 4. RENDER UI ---
-function renderAdminReviews(reviewsList) {
-    const listEl = document.getElementById('adm-rv-list');
-    if(!listEl) return;
-
-    listEl.innerHTML = reviewsList.map(r => `
-        <div class="a-item">
-            <div>
-                <div class="a-item-t">${r.name} — ${'★'.repeat(r.stars)}</div>
-                <div class="a-item-s">${r.role} · "${r.text.slice(0, 60)}..."</div>
-            </div>
-            <button class="btn-del" onclick="deleteReview('${r.id}')">Delete</button>
+  list.innerHTML = galleryData.map(g => `
+    <div class="adm-gal-card">
+      <img src="${g.img}" alt="${g.name}">
+      <div class="adm-gal-card-info">
+        <div class="adm-gal-card-name">${g.name}</div>
+        <div class="adm-gal-card-tag">${g.tag}</div>
+        <div class="adm-gal-card-btns">
+          <button style="background:var(--gold);color:#000" onclick="editGalleryItem('${g.id}')">Edit</button>
+          <button style="background:#fee;color:#c0392b;border:1px solid #fcc" onclick="deleteGalleryItem('${g.id}')">Del</button>
         </div>
-    `).join('') || '<p style="color:#bbb;font-size:13px">No reviews yet.</p>';
+      </div>
+    </div>`).join('');
 }
 
+// ══════════════ PERFORMANCE COUNTER (IntersectionObserver) ═════════════════
+(function initPerformanceCounters() {
+  const cards = document.querySelectorAll('[data-perf]');
+  if (!cards.length) return;
 
-// ── QUOTE ──
-function submitQuote(e){e.preventDefault();document.getElementById('quote-ok').style.display='block';}
+  function animateCount(el, target, suffix) {
+    const duration = 1800;
+    const start    = performance.now();
+    function tick(now) {
+      const elapsed  = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3);
+      const current  = Math.floor(eased * target);
+      el.textContent = current + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
 
-// ── OVERLAY DISMISS ──
-document.getElementById('admin-overlay').addEventListener('click',e=>{if(e.target.id==='admin-overlay')closeAdmin();});
-document.getElementById('action-screen').addEventListener('click',e=>{if(e.target.id==='action-screen')closeActionScreen();});
-document.getElementById('blog-modal').addEventListener('click',e=>{if(e.target.id==='blog-modal')closeBlogModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeAdmin();closeLogin();closeActionScreen();closeBlogModal();closeBlogPage();}});
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = '1';
+        entry.target.classList.add('in-view');
+        const numEl = entry.target.querySelector('[data-target]');
+        if (numEl) {
+          const target = parseInt(numEl.dataset.target, 10) || 0;
+          const suffix = numEl.dataset.suffix || '';
+          animateCount(numEl, target, suffix);
+        }
+      }
+    });
+  }, { threshold: 0.25 });
 
-// ── INIT ──
+  cards.forEach(card => observer.observe(card));
+})();
+
+// ══════════════ OVERLAY DISMISS & KEYBOARD ═════════════════════════════════
+const adminOverlay = document.getElementById('admin-overlay');
+const actionScreen = document.getElementById('action-screen');
+if (adminOverlay) adminOverlay.addEventListener('click', e => { if (e.target.id === 'admin-overlay') closeAdmin(); });
+if (actionScreen) actionScreen.addEventListener('click', e => { if (e.target.id === 'action-screen') closeActionScreen(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLightbox(); closeAdmin(); closeLogin(); closeActionScreen(); }
+});
+
+// ══════════════ INIT ═══════════════════════════════════════════════════════
 setStars(5);
 renderGallery();
-renderReviews();
-renderBlogSlider();
-// re-sync sliders after fonts load
-window.addEventListener('load',()=>{updateSlider('rv');updateSlider('bl');});
-
-window.renderReviews = renderReviews;
 </script>
 </body>
 </html>
